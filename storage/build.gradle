@@ -1,0 +1,38 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation(project(":domain"))
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.kotlin.stdlib
+
+    implementation deps.koin.koin_android
+
+    implementation group: 'org.slf4j', name: 'slf4j-android', version: '1.7.21'
+    implementation 'io.github.microutils:kotlin-logging:1.12.0'
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath deps.kotlin.plugin
+    }
+}
+repositories {
+    mavenCentral()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}

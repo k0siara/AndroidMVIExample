@@ -1,2 +1,5 @@
+include ':storage'
+include ':utils'
+include ':domain'
 include ':app'
 rootProject.name = "AndroidMVIExample"

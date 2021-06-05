@@ -1,0 +1,48 @@
+def kotlin_version = '1.4.30'
+ext.versions = [
+        kotlin                  :   "$kotlin_version",
+        kotlin_jdk8             :   "jdk8-$kotlin_version",
+        android_gradle_plugin   :   "4.1.0",
+        shot                    :   "4.4.0",
+        koin                    :   "2.2.2",
+        lifecycle               :   "2.3.0",
+        lifecycle_extensions    :   "2.2.0",
+        espresso                :   '3.2.0',
+]
+
+def deps = [:]
+deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+deps.shot = "com.karumi:shot:$versions.shot"
+
+def kotlin = [
+        plugin  :   "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+        stdlib  :   "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
+        test    :   "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
+]
+deps.kotlin = kotlin
+
+def lifecycle = [
+        runtime         :   "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
+        livedata_ktx    :   "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle",
+        extensions      :   "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle_extensions",
+        viewmodel_ktx   :   "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
+]
+deps.lifecycle = lifecycle
+
+def koin = [
+        koin_android    :   "org.koin:koin-android:$versions.koin",
+        koin_viewmodel  :   "org.koin:koin-androidx-viewmodel:$versions.koin"
+]
+deps.koin = koin
+deps.koin_test =  "org.koin:koin-test:$versions.koin"
+
+def espresso = [
+        core    :   "androidx.test.espresso:espresso-core:$versions.espresso",
+        intents :   "androidx.test.espresso:espresso-intents:$versions.espresso",
+        contrib :   "androidx.test.espresso:espresso-contrib:$versions.espresso"
+]
+deps.espresso = espresso
+
+
+ext.deps = [:]
+ext.deps = deps

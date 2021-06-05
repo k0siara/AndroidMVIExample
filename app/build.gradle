@@ -1,45 +1,196 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+ext.enableScreenshots = gradle.startParameter.taskNames.size() > 0 && gradle.startParameter.taskNames.get(0) == "connectedDebugAndroidTest"
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
+    }
 }
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "kotlin-allopen"
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
+def appId = "com.patrykkosieradzki.androidmviexample"
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.patrykkosieradzki.androidmviexample"
+        applicationId appId
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        if (project.ext.enableScreenshots == true) {
+            testInstrumentationRunnerArguments shot: 'true'
+        }
+
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    testOptions {
+        if (project.ext.enableScreenshots == false) {
+            if (!isIdeBuild) {
+                execution 'ANDROIDX_TEST_ORCHESTRATOR'
+            }
+        }
+        animationsDisabled = true
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    adbOptions {
+        installOptions '-g', '-r'
+    }
+
+    buildFeatures.dataBinding = true
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    packagingOptions {
+        exclude "**/attach_hotspot_windows.dll"
+        exclude "META-INF/licenses/**"
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
+}
+
+allOpen {
+    annotation("com.patrykkosieradzki.androidmviexample.utils.AllOpen")
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":storage"))
+    implementation(project(":utils"))
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3'
+
     implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.livedata_ktx
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.viewmodel_ktx
+
+    testImplementation 'junit:junit:4.13.1'
+
+    implementation "androidx.fragment:fragment-ktx:1.3.0"
+
+    implementation "androidx.navigation:navigation-runtime-ktx:2.3.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
+
+    implementation deps.koin.koin_android
+    implementation deps.koin.koin_viewmodel
+
+    // Testing
+    testImplementation "com.google.truth:truth:1.1.2"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.3'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation deps.koin_test
+
+    // AndroidTests
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0") {
+        exclude group: 'org.mockito'
+    }
+    androidTestImplementation "com.google.truth:truth:1.1.2"
+    androidTestImplementation(deps.koin_test) {
+        exclude group: 'org.mockito'
+    }
+    androidTestImplementation 'org.mockito:mockito-android:3.8.0'
+    androidTestImplementation deps.espresso.values()
+    androidTestUtil 'androidx.test:orchestrator:1.3.0'
+    androidTestImplementation 'androidx.test:core:1.0.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation 'com.airbnb.android:lottie:3.6.1'
+}
+
+def projectScreenshotsDirectory = "$projectDir/screenshots"
+def deviceScreenshotsDirectory = '/sdcard/Pictures/' + appId + '/debug/screenshots'
+
+def clearScreenshotsTask = task('clearScreenshots', type: Exec) {
+    executable "${android.getAdbExe().toString()}"
+    args 'shell', 'rm', '-r', deviceScreenshotsDirectory
+}
+
+def createScreenshotDirectoryTask = task('createScreenshotDirectory', type: Exec, group: 'reporting') {
+    executable "${android.getAdbExe().toString()}"
+    args 'shell', 'mkdir', '-p', deviceScreenshotsDirectory
+}
+
+def fetchScreenshotsTask = task('fetchScreenshots', type: Exec, group: 'reporting') {
+    executable "${android.getAdbExe().toString()}"
+    args 'pull', deviceScreenshotsDirectory + '/.', projectScreenshotsDirectory
+    finalizedBy {
+        clearScreenshotsTask
+    }
+
+    dependsOn {
+        createScreenshotDirectoryTask
+    }
+
+    doFirst {
+        new File(projectScreenshotsDirectory).mkdirs()
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'connectedDebugAndroidTest') {
+        task.finalizedBy {
+            fetchScreenshotsTask
+        }
+    }
 }
