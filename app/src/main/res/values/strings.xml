@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidMVIExample</string>
+    <string name="add">Add</string>
 </resources>
