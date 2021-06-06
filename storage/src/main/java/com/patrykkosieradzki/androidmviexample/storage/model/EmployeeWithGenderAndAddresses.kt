@@ -6,7 +6,7 @@ import com.patrykkosieradzki.androidmviexample.storage.entity.AddressEntity
 import com.patrykkosieradzki.androidmviexample.storage.entity.EmployeeEntity
 import com.patrykkosieradzki.androidmviexample.storage.entity.GenderEntity
 
-data class UserWithGenderAndAddresses(
+data class EmployeeWithGenderAndAddresses(
     @Embedded val employee: EmployeeEntity,
     @Embedded val gender: GenderEntity,
     @Relation(
