@@ -11,6 +11,8 @@ interface EmployeeListContract {
     sealed class State : UiState {
         class Loading(override val isLoading: Boolean = true) : State()
         class Success(override val isLoading: Boolean = false) : State()
+        class Empty(override val isLoading: Boolean = false) : State()
+        class Error(override val isLoading: Boolean = false) : State()
     }
 
     sealed class Effect : UiEffect

@@ -10,13 +10,19 @@
         <variable
             name="item"
             type="EmployeeWithGenderAndAddresses" />
+
+        <variable
+            name="listener"
+            type="com.patrykkosieradzki.androidmviexample.utils.OnItemClickListener&lt;EmployeeWithGenderAndAddresses>" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white_grey"
         android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> listener.onClick(item)}"
         android:orientation="vertical"
         android:padding="@dimen/dimen_20">
 
@@ -30,7 +36,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="John Smith" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

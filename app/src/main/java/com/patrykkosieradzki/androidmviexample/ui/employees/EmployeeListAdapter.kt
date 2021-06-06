@@ -7,8 +7,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.patrykkosieradzki.androidmviexample.databinding.EmployeeListItemBinding
 import com.patrykkosieradzki.androidmviexample.storage.model.EmployeeWithGenderAndAddresses
+import com.patrykkosieradzki.androidmviexample.utils.OnItemClickListener
 
-class EmployeeListAdapter :
+class EmployeeListAdapter(private val onClick: (EmployeeWithGenderAndAddresses) -> Unit) :
     PagingDataAdapter<EmployeeWithGenderAndAddresses, EmployeeListAdapter.EmployeeListItemViewHolder>(
         EmployeeDiffCallback()
     ) {
@@ -29,14 +30,13 @@ class EmployeeListAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(employee: EmployeeWithGenderAndAddresses): View {
             binding.item = employee
-//            binding.listener = object : OnItemClickListener<EmployeeListItem> {
-//                override fun onClick(item: EmployeeListItem) {
-//                    onClick.invoke(item)
-//                }
-//            }
+
+            binding.listener = object : OnItemClickListener<EmployeeWithGenderAndAddresses> {
+                override fun onClick(item: EmployeeWithGenderAndAddresses) {
+                    onClick.invoke(item)
+                }
+            }
             return binding.root
         }
     }
-
-
 }

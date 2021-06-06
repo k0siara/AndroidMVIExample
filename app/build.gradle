@@ -164,8 +164,6 @@ dependencies {
     
     def paging_version = "3.0.0-beta01"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-
-
 }
 
 def projectScreenshotsDirectory = "$projectDir/screenshots"

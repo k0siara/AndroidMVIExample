@@ -40,8 +40,7 @@ abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect
 //        }
     }
 
-    open fun initialize() {
-    }
+    open fun initialize() {}
 
     protected fun navigateTo(navDirections: NavDirections) {
         safeLaunch {

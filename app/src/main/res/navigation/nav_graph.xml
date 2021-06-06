@@ -14,7 +14,7 @@
             android:id="@+id/to_addEmployeeFragment"
             app:destination="@id/addEmployeeFragment" />
         <action
-            android:id="@+id/action_employeeListFragment_to_employeeDetailsFragment"
+            android:id="@+id/to_employeeDetailsFragment"
             app:destination="@id/employeeDetailsFragment" />
     </fragment>
     <fragment

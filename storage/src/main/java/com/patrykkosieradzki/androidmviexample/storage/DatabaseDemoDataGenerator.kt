@@ -35,7 +35,7 @@ class DatabaseDemoDataGenerator(
 
         val EMPLOYEES = listOf(
             EmployeeEntity(1, "John", "Snow", 30, 1),
-            EmployeeEntity(1, "Ann", "Brie", 25, 2),
+            EmployeeEntity(2, "Ann", "Brie", 25, 2),
         )
     }
 }

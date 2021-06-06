@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-//        GlobalScope.launch {
-//            demoDataGenerator.loadDemoDataIntoDB()
-//        }
+        GlobalScope.launch {
+            demoDataGenerator.loadDemoDataIntoDB()
+        }
     }
 }

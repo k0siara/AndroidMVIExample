@@ -27,19 +27,22 @@ class EmployeeListViewModel(
         pagingSourceFactory = { employeeDao.pagingSource() }
     ).flow.cachedIn(viewModelScope)
 
-    override fun initialize() {
-        super.initialize()
+    override fun handleEvent(event: EmployeeListContract.Event) {}
 
-//        safeLaunch {
-//            employees.collectLatest {
-//                if (currentState is EmployeeListContract.State.Loading) {
-//                    updateUiState { EmployeeListContract.State.Success() }
-//                }
-//            }
-//        }
+    fun setLoadingState() {
+        updateUiState { EmployeeListContract.State.Loading() }
     }
 
-    override fun handleEvent(event: EmployeeListContract.Event) {
+    fun setSuccessState() {
+        updateUiState { EmployeeListContract.State.Success() }
+    }
+
+    fun setEmptyState() {
+        updateUiState { EmployeeListContract.State.Empty() }
+    }
+
+    fun setErrorState() {
+        updateUiState { EmployeeListContract.State.Error() }
     }
 
     fun onAddEmployeeButtonClicked() {
