@@ -1,7 +1,11 @@
+package com.patrykkosieradzki.androidmviexample.ui.add
+
+import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
 
 class AddEmployeeViewModel :
-    BaseViewModel<EmployeeDetailsContract.State, EmployeeDetailsContract.Event, EmployeeDetailsContract.Effect>(
-    initialState = EmployeeDetailsContract.State()
-) { {
-
+    BaseViewModel<AddEmployeeContract.State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
+        initialState = AddEmployeeContract.State.Loading()
+    ) {
+    override fun handleEvent(event: AddEmployeeContract.Event) {
+    }
 }

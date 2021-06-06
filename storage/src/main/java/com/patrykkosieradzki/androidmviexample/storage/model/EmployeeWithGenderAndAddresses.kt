@@ -8,7 +8,13 @@ import com.patrykkosieradzki.androidmviexample.storage.entity.GenderEntity
 
 data class EmployeeWithGenderAndAddresses(
     @Embedded val employee: EmployeeEntity,
-    @Embedded val gender: GenderEntity,
+
+    @Relation(
+        parentColumn = "genderId",
+        entityColumn = "uid"
+    )
+    val gender: GenderEntity,
+
     @Relation(
         parentColumn = "employeeId",
         entityColumn = "employeeId"

@@ -11,6 +11,7 @@ import com.patrykkosieradzki.androidmviexample.storage.entity.GenderEntity
 
 @Database(
     entities = [GenderEntity::class, AddressEntity::class, EmployeeEntity::class],
+    exportSchema = false,
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {

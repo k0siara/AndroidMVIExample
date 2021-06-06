@@ -14,7 +14,7 @@ class EmployeeListViewModel(
     private val employeeDao: EmployeeDao
 ) :
     BaseViewModel<EmployeeListContract.State, EmployeeListContract.Event, EmployeeListContract.Effect>(
-        initialState = EmployeeListContract.State()
+        initialState = EmployeeListContract.State.Success()
     ) {
 
     val employees: Flow<PagingData<EmployeeWithGenderAndAddresses>> = Pager(
@@ -27,8 +27,23 @@ class EmployeeListViewModel(
         pagingSourceFactory = { employeeDao.pagingSource() }
     ).flow.cachedIn(viewModelScope)
 
+    override fun initialize() {
+        super.initialize()
+
+//        safeLaunch {
+//            employees.collectLatest {
+//                if (currentState is EmployeeListContract.State.Loading) {
+//                    updateUiState { EmployeeListContract.State.Success() }
+//                }
+//            }
+//        }
+    }
+
     override fun handleEvent(event: EmployeeListContract.Event) {
-        TODO("Not yet implemented")
+    }
+
+    fun onAddEmployeeButtonClicked() {
+        navigateTo(EmployeeListFragmentDirections.toAddEmployeeFragment())
     }
 
     companion object {

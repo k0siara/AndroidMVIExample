@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieDrawable
@@ -19,8 +18,8 @@ import com.patrykkosieradzki.androidmviexample.BR
 import com.patrykkosieradzki.androidmviexample.R
 import com.patrykkosieradzki.androidmviexample.domain.AppConfiguration
 import com.patrykkosieradzki.androidmviexample.utils.extensions.goneIfWithAnimation
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import timber.log.Timber
@@ -95,17 +94,26 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
         }
     }
 
+    @InternalCoroutinesApi
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(viewModel) {
-            viewModelScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    inProgress.collect {
-                        loader?.goneIfWithAnimation(!it)
-                    }
-                }
+            inProgress
+                .onEach { loader?.goneIfWithAnimation(!it) }
+                .observeInLifecycle(viewLifecycleOwner)
 
-            }
+            event
+                .onEach { handleEvent(it) }
+                .observeInLifecycle(viewLifecycleOwner)
+
+            navigationCommandEvent
+                .onEach {
+                    when (it) {
+                        is NavigationCommand.To -> findNavController().navigate(it.directions)
+                        is NavigationCommand.Back -> onBackEvent.invoke()
+                    }
+                }.observeInLifecycle(viewLifecycleOwner)
+
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
                 onBackEvent.invoke()
             }

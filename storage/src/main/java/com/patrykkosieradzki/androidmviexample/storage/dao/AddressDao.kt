@@ -7,5 +7,5 @@ import com.patrykkosieradzki.androidmviexample.storage.entity.AddressEntity
 @Dao
 interface AddressDao {
     @Insert
-    fun insertAll(addresses: List<AddressEntity>)
+    suspend fun insertAll(addresses: List<AddressEntity>)
 }

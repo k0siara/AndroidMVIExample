@@ -1,16 +1,14 @@
-package com.patrykkosieradzki.androidmviexample.ui.employees
+package com.patrykkosieradzki.androidmviexample.ui.add
 
 import com.patrykkosieradzki.androidmviexample.utils.UiEffect
 import com.patrykkosieradzki.androidmviexample.utils.UiEvent
 import com.patrykkosieradzki.androidmviexample.utils.UiState
 
-interface EmployeeListContract {
-
+class AddEmployeeContract {
     sealed class Event : UiEvent
 
     sealed class State : UiState {
         class Loading(override val isLoading: Boolean = true) : State()
-        class Success(override val isLoading: Boolean = false) : State()
     }
 
     sealed class Effect : UiEffect

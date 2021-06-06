@@ -5,7 +5,6 @@ import com.google.firebase.FirebaseApp
 import com.patrykkosieradzki.androidmviexample.di.appModule
 import com.patrykkosieradzki.androidmviexample.storage.di.storageModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -19,7 +18,6 @@ class AndroidMVIExampleApplication : Application() {
         }
 
         startKoin {
-            androidLogger()
             androidContext(this@AndroidMVIExampleApplication)
             modules(appModule, storageModule)
         }

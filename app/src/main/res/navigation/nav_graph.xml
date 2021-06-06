@@ -5,10 +5,26 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/employeeListFragment">
 
-
     <fragment
         android:id="@+id/employeeListFragment"
-        tools:layout="@layout/employee_list_fragment"
         android:name="com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListFragment"
-        android:label="EmployeeListFragment" />
+        android:label="EmployeeListFragment"
+        tools:layout="@layout/employee_list_fragment">
+        <action
+            android:id="@+id/to_addEmployeeFragment"
+            app:destination="@id/addEmployeeFragment" />
+        <action
+            android:id="@+id/action_employeeListFragment_to_employeeDetailsFragment"
+            app:destination="@id/employeeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEmployeeFragment"
+        android:name="com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeFragment"
+        android:label="AddEmployeeFragment"
+        tools:layout="@layout/add_employee_fragment" />
+    <fragment
+        android:id="@+id/employeeDetailsFragment"
+        android:name="com.patrykkosieradzki.androidmviexample.ui.details.EmployeeDetailsFragment"
+        android:label="EmployeeDetailsFragment"
+        tools:layout="@layout/employee_details_fragment" />
 </navigation>

@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListItem" />
+        <import type="com.patrykkosieradzki.androidmviexample.storage.model.EmployeeWithGenderAndAddresses" />
 
         <variable
             name="item"
-            type="EmployeeListItem" />
+            type="EmployeeWithGenderAndAddresses" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.fullName}"
+            android:text="@{item.employee.firstName}"
             android:textSize="@dimen/font_size_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

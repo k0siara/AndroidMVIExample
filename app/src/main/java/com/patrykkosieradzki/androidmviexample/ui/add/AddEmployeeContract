@@ -1,9 +1,0 @@
-interface AddEmployeeContract {
-    sealed class Event : UiEvent
-
-    sealed class State : UiState {
-        object Loading() : LoadingUiState()
-    }
-
-    sealed class Effect : UiEffect
-}

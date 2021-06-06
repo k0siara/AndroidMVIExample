@@ -7,5 +7,5 @@ import com.patrykkosieradzki.androidmviexample.storage.entity.GenderEntity
 @Dao
 interface GenderDao {
     @Insert
-    fun insertAll(genders: List<GenderEntity>)
+    suspend fun insertAll(genders: List<GenderEntity>)
 }

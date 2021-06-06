@@ -1,6 +1,7 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
 import androidx.lifecycle.*
+import androidx.navigation.NavDirections
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -17,7 +18,7 @@ abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect
     val currentState: STATE
         get() = uiState.value
     val inProgress: Flow<Boolean>
-        get() = uiState.map { it.inProgress }
+        get() = uiState.map { it.isLoading }
 
     private val _uiState: MutableStateFlow<STATE> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
@@ -27,6 +28,9 @@ abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect
 
     private val _effect: Channel<EFFECT> = Channel()
     val effect = _effect.receiveAsFlow()
+
+    private val _navigationCommandEvent = Channel<NavigationCommand>(Channel.BUFFERED)
+    val navigationCommandEvent = _navigationCommandEvent.receiveAsFlow()
 
     protected val handler = CoroutineExceptionHandler { _, exception ->
         Timber.e(exception, COROUTINE_EXCEPTION_HANDLER_MESSAGE)
@@ -39,11 +43,9 @@ abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect
     open fun initialize() {
     }
 
-    private fun subscribeToEvents() {
-        viewModelScope.launch {
-            event.collect {
-                handleEvent(it)
-            }
+    protected fun navigateTo(navDirections: NavDirections) {
+        safeLaunch {
+            _navigationCommandEvent.send(NavigationCommand.To(navDirections))
         }
     }
 
@@ -68,12 +70,12 @@ abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect
         viewModelScope.launch { _effect.send(effectBuilder()) }
     }
 
-    fun updateUiStateToSuccess() {
-        updateUiState {
-            @Suppress("UNCHECKED_CAST")
-            it.toSuccess() as STATE
-        }
-    }
+//    fun updateUiStateToSuccess() {
+//        updateUiState {
+//            @Suppress("UNCHECKED_CAST")
+//            it.toSuccess() as STATE
+//        }
+//    }
 
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(handler, block = block)
