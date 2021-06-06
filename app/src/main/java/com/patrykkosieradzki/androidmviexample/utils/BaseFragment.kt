@@ -99,9 +99,12 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
         super.onViewCreated(view, savedInstanceState)
         with(viewModel) {
             viewModelScope.launch {
-                inProgress.collect {
-                    loader?.goneIfWithAnimation(!it)
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    inProgress.collect {
+                        loader?.goneIfWithAnimation(!it)
+                    }
                 }
+
             }
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
                 onBackEvent.invoke()

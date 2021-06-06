@@ -1,0 +1,23 @@
+class EmployeeListAdapter :
+    PagingDataAdapter<EmployeeListItem, EmployeeListAdapter.EmployeeListItemViewHolder>(EmployeeDiffCallback()) {
+
+    override fun onBindViewHolder(holder: EmployeeListItemViewHolder, position: Int) {
+        val employee = getItem(position)
+        holder.bind(employee!!)
+        getItem(position)?.let { holder.bind(it) }
+    }
+
+    inner class EmployeeListItemViewHolder(
+        private val binding: EmployeeListItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(employee: EmployeeListItem): View {
+            binding.item = employee
+            binding.listener = object : OnItemClickListener<EmployeeListItem> {
+                override fun onClick(item: EmployeeListItem) {
+                    onClick.invoke(item)
+                }
+            }
+            return binding.root
+        }
+    }
+}

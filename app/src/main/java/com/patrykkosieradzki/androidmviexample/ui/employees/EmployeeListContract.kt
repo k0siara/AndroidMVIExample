@@ -4,7 +4,7 @@ import com.patrykkosieradzki.androidmviexample.utils.UiEffect
 import com.patrykkosieradzki.androidmviexample.utils.UiEvent
 import com.patrykkosieradzki.androidmviexample.utils.UiState
 
-class EmployeeListContract {
+interface EmployeeListContract {
 
     sealed class Event : UiEvent
 
