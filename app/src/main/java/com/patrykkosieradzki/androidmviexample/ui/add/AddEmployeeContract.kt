@@ -7,18 +7,36 @@ import com.patrykkosieradzki.androidmviexample.utils.UiEvent
 import com.patrykkosieradzki.androidmviexample.utils.UiState
 
 class AddEmployeeContract {
-    sealed class Event : UiEvent
+    sealed class Event : UiEvent {
+        object AddAddressEvent : Event()
+        class RemoveAddressEvent(val address: Address) : Event()
+    }
 
     abstract class FormState(
-        val firstName: String = "",
-        val lastName: String = "",
-        val addresses: List<Address> = mutableListOf()
+        open val firstName: String,
+        open val lastName: String,
+        open val address: String,
+        open val addresses: List<Address>
     ) : UiState {
         override val isLoading: Boolean = false
     }
 
-    sealed class State : FormState() {
+    sealed class State(
+        override val firstName: String = "",
+        override val lastName: String = "",
+        override val address: String = "",
+        override val addresses: List<Address> = mutableListOf()
+    ) : FormState(firstName, lastName, address, addresses) {
         class Initial(val genders: List<Gender>) : State() {
+            override val isLoading: Boolean = false
+        }
+
+        data class FormUpdated(
+            override val firstName: String,
+            override val lastName: String,
+            override val address: String,
+            override val addresses: List<Address>
+        ) : State() {
             override val isLoading: Boolean = false
         }
 

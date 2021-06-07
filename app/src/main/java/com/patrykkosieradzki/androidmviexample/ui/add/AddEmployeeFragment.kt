@@ -2,6 +2,7 @@ package com.patrykkosieradzki.androidmviexample.ui.add
 
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.widget.doOnTextChanged
 import com.patrykkosieradzki.androidmviexample.R
 import com.patrykkosieradzki.androidmviexample.databinding.AddEmployeeFragmentBinding
 import com.patrykkosieradzki.androidmviexample.domain.model.Gender
@@ -26,21 +27,35 @@ class AddEmployeeFragment :
             addressesRecyclerView.adapter = AddressAdapter(mutableListOf()) {
                 viewModel.onRemoveAddressClicked(it)
             }
+            firstName.doOnTextChanged { text, _, _, _ ->
+                viewModel.updateForm(firstName = text.toString())
+            }
+            lastName.doOnTextChanged { text, _, _, _ ->
+                viewModel.updateForm(lastName = text.toString())
+            }
+            address.doOnTextChanged { text, _, _, _ ->
+                viewModel.updateForm(address = text.toString())
+            }
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun handleState(it: AddEmployeeContract.State) {
-
-
-        when (it) {
-            is AddEmployeeContract.State.Initial -> {
-                (binding.genderSpinner.adapter as ArrayAdapter<Gender>).run {
-                    addAll(it.genders)
-                    binding.genderSpinner.setSelection(0)
-                }
+        with(binding) {
+            (addressesRecyclerView.adapter as AddressAdapter).run {
+                setItems(it.addresses)
+                notifyDataSetChanged() // Todo: replace with DiffUtil
             }
-            else -> {
+
+            when (it) {
+                is AddEmployeeContract.State.Initial -> {
+                    (genderSpinner.adapter as ArrayAdapter<Gender>).run {
+                        addAll(it.genders)
+                        genderSpinner.setSelection(0)
+                    }
+                }
+                else -> {
+                }
             }
         }
     }

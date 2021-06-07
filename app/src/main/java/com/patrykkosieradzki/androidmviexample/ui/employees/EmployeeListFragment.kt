@@ -28,7 +28,7 @@ class EmployeeListFragment :
         super.setupViews(view)
         onBackEvent = { requireActivity().moveTaskToBack(true) }
         adapter = EmployeeListAdapter {
-            navigateTo(EmployeeListFragmentDirections.toEmployeeDetailsFragment())
+//            navigateTo(EmployeeListFragmentDirections.toEmployeeDetailsFragment())
         }
         layoutManager = LinearLayoutManager(requireContext())
         with(binding) {

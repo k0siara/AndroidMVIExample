@@ -16,7 +16,21 @@ class AddEmployeeViewModel(
         loadGenders()
     }
 
-    override fun handleEvent(event: AddEmployeeContract.Event) {}
+    override fun handleEvent(event: AddEmployeeContract.Event) {
+        when (event) {
+            is AddEmployeeContract.Event.AddAddressEvent -> {
+                updateForm(
+                    address = "",
+                    addresses = currentState.addresses.plus(Address(currentState.address))
+                )
+            }
+            is AddEmployeeContract.Event.RemoveAddressEvent -> {
+                val addresses = currentState.addresses.toMutableList()
+                addresses.remove(event.address)
+                updateForm(addresses = addresses)
+            }
+        }
+    }
 
     private fun loadGenders() {
         safeLaunch {
@@ -25,11 +39,27 @@ class AddEmployeeViewModel(
         }
     }
 
-    fun onAddAddressClicked() {
+    fun updateForm(
+        firstName: String? = null,
+        lastName: String? = null,
+        address: String? = null,
+        addresses: List<Address>? = null,
+    ) {
+        updateUiState {
+            AddEmployeeContract.State.FormUpdated(
+                firstName = firstName ?: currentState.firstName,
+                lastName = lastName ?: currentState.lastName,
+                address = address ?: currentState.address,
+                addresses = addresses ?: currentState.addresses
+            )
+        }
+    }
 
+    fun onAddAddressClicked() {
+        setUiEvent(AddEmployeeContract.Event.AddAddressEvent)
     }
 
     fun onRemoveAddressClicked(address: Address) {
-
+        setUiEvent(AddEmployeeContract.Event.RemoveAddressEvent(address))
     }
 }

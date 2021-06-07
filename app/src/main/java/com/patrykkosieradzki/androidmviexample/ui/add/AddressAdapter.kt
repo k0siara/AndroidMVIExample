@@ -26,8 +26,9 @@ class AddressAdapter(
 
     override fun getItemCount() = dataSet.size
 
-    fun addItem(address: Address) {
-        dataSet.add(address)
+    fun setItems(addresses: List<Address>) {
+        dataSet.clear()
+        dataSet.addAll(addresses)
     }
 
     inner class AddressListItemViewHolder(
