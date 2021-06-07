@@ -36,6 +36,14 @@ class DatabaseDemoDataGenerator(
         val EMPLOYEES = listOf(
             EmployeeEntity(1, "John", "Snow", 30, 1),
             EmployeeEntity(2, "Ann", "Brie", 25, 2),
+            EmployeeEntity(3, "Andrew", "Toms", 19, 1),
+            EmployeeEntity(4, "Kate", "Grand", 28, 2),
+            EmployeeEntity(5, "Pat", "Thing", 24, 2),
+            EmployeeEntity(6, "Mat", "Keyboard", 23, 1),
+            EmployeeEntity(7, "Tom", "Hanks", 28, 1),
+            EmployeeEntity(8, "Brad", "Pit", 29, 1),
+            EmployeeEntity(9, "John", "Mallek", 35, 1),
+            EmployeeEntity(10, "Ann", "Picker", 45, 2),
         )
     }
 }

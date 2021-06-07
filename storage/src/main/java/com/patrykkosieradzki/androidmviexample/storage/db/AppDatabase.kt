@@ -12,7 +12,7 @@ import com.patrykkosieradzki.androidmviexample.storage.entity.GenderEntity
 @Database(
     entities = [GenderEntity::class, AddressEntity::class, EmployeeEntity::class],
     exportSchema = false,
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun addressDao(): AddressDao

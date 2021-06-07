@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "genders")
 data class GenderEntity(
     @PrimaryKey val uid: Long,
     @ColumnInfo(name = "name") val name: String

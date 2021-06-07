@@ -106,6 +106,10 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
                 .onEach { handleEvent(it) }
                 .observeInLifecycle(viewLifecycleOwner)
 
+            uiState
+                .onEach { handleState(it) }
+                .observeInLifecycle(viewLifecycleOwner)
+
             navigationCommandEvent
                 .onEach {
                     when (it) {
@@ -121,6 +125,8 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
             initialize()
         }
     }
+
+    abstract fun handleState(it: STATE)
 
     open fun setupViews(view: View) {}
 

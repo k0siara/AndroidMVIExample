@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">AndroidMVIExample</string>
+    <string name="new_employee">New Employee</string>
     <string name="add">Add</string>
+    <string name="first_name">First name</string>
+    <string name="first_name_hint">Enter first name</string>
+    <string name="last_name">Last name</string>
+    <string name="last_name_hint">Enter last name</string>
+    <string name="gender">Gender</string>
+
+    <string name="address">Address</string>
+    <string name="address_hint">Enter new address</string>
 </resources>

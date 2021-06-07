@@ -68,15 +68,14 @@ class EmployeeListFragment :
             employees
                 .onEach { adapter.submitData(it) }
                 .observeInLifecycle(viewLifecycleOwner)
+        }
+    }
 
-            uiState
-                .onEach {
-                    if (it is EmployeeListContract.State.Empty) {
-                        view.findViewById<TextView>(R.id.empty_text).visibility = View.VISIBLE
-                    } else {
-                        view.findViewById<TextView>(R.id.empty_text).visibility = View.GONE
-                    }
-                }.observeInLifecycle(viewLifecycleOwner)
+    override fun handleState(it: EmployeeListContract.State) {
+        if (it is EmployeeListContract.State.Empty) {
+            view?.findViewById<TextView>(R.id.empty_text)?.visibility = View.VISIBLE
+        } else {
+            view?.findViewById<TextView>(R.id.empty_text)?.visibility = View.GONE
         }
     }
 }

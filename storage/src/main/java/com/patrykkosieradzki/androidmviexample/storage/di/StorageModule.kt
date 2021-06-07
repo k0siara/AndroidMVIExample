@@ -29,6 +29,9 @@ val storageModule = module {
     }
 
     single<EmployeeRepository> {
-        LocalEmployeeRepository(employeeDao = get())
+        LocalEmployeeRepository(
+            employeeDao = get(),
+            genderDao = get()
+        )
     }
 }

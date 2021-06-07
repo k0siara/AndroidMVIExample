@@ -9,4 +9,9 @@ class EmployeeDetailsFragment :
         EmployeeDetailsContract.Effect, EmployeeDetailsViewModel, EmployeeDetailsFragmentBinding>(
         R.layout.employee_details_fragment,
         EmployeeDetailsViewModel::class
-    )
+    ) {
+
+    override fun handleState(it: EmployeeDetailsContract.State) {
+        TODO("Not yet implemented")
+    }
+}

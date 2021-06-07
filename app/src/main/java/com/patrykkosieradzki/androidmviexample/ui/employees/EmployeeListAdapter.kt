@@ -9,8 +9,9 @@ import com.patrykkosieradzki.androidmviexample.databinding.EmployeeListItemBindi
 import com.patrykkosieradzki.androidmviexample.storage.model.EmployeeWithGenderAndAddresses
 import com.patrykkosieradzki.androidmviexample.utils.OnItemClickListener
 
-class EmployeeListAdapter(private val onClick: (EmployeeWithGenderAndAddresses) -> Unit) :
-    PagingDataAdapter<EmployeeWithGenderAndAddresses, EmployeeListAdapter.EmployeeListItemViewHolder>(
+class EmployeeListAdapter(
+    private val onClick: (EmployeeWithGenderAndAddresses) -> Unit
+) : PagingDataAdapter<EmployeeWithGenderAndAddresses, EmployeeListAdapter.EmployeeListItemViewHolder>(
         EmployeeDiffCallback()
     ) {
 

@@ -2,6 +2,8 @@ package com.patrykkosieradzki.androidmviexample.di
 
 import com.patrykkosieradzki.androidmviexample.ExampleAppConfiguration
 import com.patrykkosieradzki.androidmviexample.domain.AppConfiguration
+import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
+import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCaseImpl
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeViewModel
 import com.patrykkosieradzki.androidmviexample.ui.details.EmployeeDetailsViewModel
 import com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListViewModel
@@ -14,12 +16,11 @@ val appModule = module {
         ExampleAppConfiguration()
     }
 
-//    factory<GetAllStationsUseCase> {
-//        GetAllStationsUseCaseImpl(
-//            flightRepository = get()
-//        )
-//    }
-//
+    factory<GetGendersUseCase> {
+        GetGendersUseCaseImpl(
+            employeeRepository = get()
+        )
+    }
 
     viewModel {
         EmployeeListViewModel(
@@ -28,7 +29,7 @@ val appModule = module {
     }
 
     viewModel {
-        AddEmployeeViewModel()
+        AddEmployeeViewModel(employeeRepository = get())
     }
 
     viewModel {
