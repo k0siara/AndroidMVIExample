@@ -17,6 +17,7 @@ class AddEmployeeFragment :
 
     override fun setupViews(view: View) {
         super.setupViews(view)
+
         with(binding) {
             toolbar.setNavigationOnClickListener { onBackEvent.invoke() }
             genderSpinner.adapter = ArrayAdapter<Gender>(
