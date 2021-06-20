@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
             demoDataGenerator.loadDemoDataIntoDB()
         }
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             App()
         }
