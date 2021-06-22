@@ -4,6 +4,7 @@ import com.patrykkosieradzki.androidmviexample.ExampleAppConfiguration
 import com.patrykkosieradzki.androidmviexample.domain.AppConfiguration
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCaseImpl
+import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeComposeViewModel
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeViewModel
 import com.patrykkosieradzki.androidmviexample.ui.details.EmployeeDetailsViewModel
 import com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListViewModel
@@ -30,6 +31,10 @@ val appModule = module {
 
     viewModel {
         AddEmployeeViewModel(employeeRepository = get())
+    }
+
+    viewModel {
+        AddEmployeeComposeViewModel(employeeRepository = get())
     }
 
     viewModel {
