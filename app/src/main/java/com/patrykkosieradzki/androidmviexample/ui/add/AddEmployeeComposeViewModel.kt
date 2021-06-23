@@ -30,6 +30,7 @@ class AddEmployeeComposeViewModel(
         updateForm(
             firstName = event.firstName,
             lastName = event.lastName,
+            gender = event.gender,
             address = event.address
         )
     }
@@ -62,6 +63,7 @@ class AddEmployeeComposeViewModel(
     private fun updateForm(
         firstName: String? = null,
         lastName: String? = null,
+        gender: String? = null,
         address: String? = null,
         addresses: List<Address>? = null,
     ) {
@@ -69,6 +71,7 @@ class AddEmployeeComposeViewModel(
             AddEmployeeContract.State.FormUpdated(
                 firstName = firstName ?: currentState.firstName,
                 lastName = lastName ?: currentState.lastName,
+                gender = gender ?: currentState.gender,
                 address = address ?: currentState.address,
                 addresses = addresses ?: currentState.addresses
             )

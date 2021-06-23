@@ -42,6 +42,7 @@ class AddEmployeeViewModel(
     fun updateForm(
         firstName: String? = null,
         lastName: String? = null,
+        gender: String? = null,
         address: String? = null,
         addresses: List<Address>? = null,
     ) {
@@ -49,6 +50,7 @@ class AddEmployeeViewModel(
             AddEmployeeContract.State.FormUpdated(
                 firstName = firstName ?: currentState.firstName,
                 lastName = lastName ?: currentState.lastName,
+                gender = gender ?: currentState.gender,
                 address = address ?: currentState.address,
                 addresses = addresses ?: currentState.addresses
             )
