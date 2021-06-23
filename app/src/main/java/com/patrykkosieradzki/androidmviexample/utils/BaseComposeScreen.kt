@@ -11,7 +11,7 @@ import androidx.lifecycle.flowWithLifecycle
 @Composable
 fun <STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect> BaseComposeScreen(
     viewModel: BaseComposeViewModel<STATE, EVENT, EFFECT>,
-    child: @Composable (state: STATE) -> Unit
+    child: @Composable (state: STATE, eventHandler: (EVENT) -> Unit) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val locationFlowLifecycleAware = remember(viewModel.uiState, lifecycleOwner) {
@@ -19,5 +19,5 @@ fun <STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect> BaseComposeScreen(
     }
     val state by locationFlowLifecycleAware.collectAsState(viewModel.initialState)
 
-    child.invoke(state)
+    child.invoke(state, viewModel.eventHandler)
 }

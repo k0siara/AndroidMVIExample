@@ -23,6 +23,8 @@ abstract class BaseComposeViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : U
     private val _uiState: MutableStateFlow<STATE> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
+    val eventHandler: (EVENT) -> Unit = ::handleEvent
+
     private val _effect: Channel<EFFECT> = Channel()
     val effect = _effect.receiveAsFlow()
 
@@ -37,8 +39,6 @@ abstract class BaseComposeViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : U
 //        }
     }
 
-    open fun initialize() {}
-
     protected fun navigateTo(navDirections: NavDirections) {
         safeLaunch {
             _navigationCommandEvent.send(NavigationCommand.To(navDirections))
@@ -46,10 +46,6 @@ abstract class BaseComposeViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : U
     }
 
     abstract fun handleEvent(event: EVENT)
-
-//    protected open fun updateError(exception: Throwable): ErrorEvent {
-//        return ErrorEvent(exception, isInitialState && _viewState.valueNN.inProgress)
-//    }
 
     protected fun updateUiState(update: (STATE) -> STATE) {
         val newState = update(currentState)
@@ -62,20 +58,9 @@ abstract class BaseComposeViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : U
         viewModelScope.launch { _effect.send(effectBuilder()) }
     }
 
-//    fun updateUiStateToSuccess() {
-//        updateUiState {
-//            @Suppress("UNCHECKED_CAST")
-//            it.toSuccess() as STATE
-//        }
-//    }
-
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(handler, block = block)
     }
-
-//    protected fun showToast(text: String) {
-//        showToastEvent.fireEvent(text)
-//    }
 
     companion object {
         private const val COROUTINE_EXCEPTION_HANDLER_MESSAGE = "ExceptionHandler"

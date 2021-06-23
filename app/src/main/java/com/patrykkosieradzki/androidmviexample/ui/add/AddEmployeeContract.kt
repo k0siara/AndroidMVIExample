@@ -10,6 +10,12 @@ class AddEmployeeContract {
     sealed class Event : UiEvent {
         object AddAddressEvent : Event()
         class RemoveAddressEvent(val address: Address) : Event()
+        class UpdateFormEvent(
+            val firstName: String? = null,
+            val lastName: String? = null,
+            val address: String? = null,
+        ) : Event()
+        object SaveEmployeeEvent : Event()
     }
 
     abstract class FormState(

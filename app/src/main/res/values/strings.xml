@@ -9,5 +9,8 @@
     <string name="gender">Gender</string>
 
     <string name="address">Address</string>
+    <string name="add_address">Add address</string>
+    <string name="remove">Remove</string>
     <string name="address_hint">Enter new address</string>
+    <string name="save_employee">Save employee</string>
 </resources>
