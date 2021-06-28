@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AllOpen
-abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect>(
+abstract class BaseViewModel<STATE : UiState<*>, EVENT : UiEvent, EFFECT : UiEffect>(
     private val initialState: STATE
 ) : ViewModel() {
 
@@ -18,7 +18,7 @@ abstract class BaseViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect
     val currentState: STATE
         get() = uiState.value
     val inProgress: Flow<Boolean>
-        get() = uiState.map { it.isLoading }
+        get() = uiState.map { it is UiState.Loading }
 
     private val _uiState: MutableStateFlow<STATE> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()

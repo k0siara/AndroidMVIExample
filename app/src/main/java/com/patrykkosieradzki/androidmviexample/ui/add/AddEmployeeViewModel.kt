@@ -2,66 +2,80 @@ package com.patrykkosieradzki.androidmviexample.ui.add
 
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
 import com.patrykkosieradzki.androidmviexample.domain.repositories.EmployeeRepository
-import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
+import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
+import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
+import com.patrykkosieradzki.androidmviexample.utils.UiState
+import kotlinx.coroutines.delay
 
 class AddEmployeeViewModel(
     private val employeeRepository: EmployeeRepository
 ) :
-    BaseViewModel<AddEmployeeContract.State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
-        initialState = AddEmployeeContract.State.Loading()
+    BaseComposeViewModel<AddEmployeeContract.State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
+        initialState = UiState.Loading
     ) {
 
-    override fun initialize() {
-        super.initialize()
+    init {
         loadGenders()
     }
 
     override fun handleEvent(event: AddEmployeeContract.Event) {
         when (event) {
-            is AddEmployeeContract.Event.AddAddressEvent -> {
-                updateForm(
-                    address = "",
-                    addresses = currentState.addresses.plus(Address(currentState.address))
-                )
-            }
-            is AddEmployeeContract.Event.RemoveAddressEvent -> {
-                val addresses = currentState.addresses.toMutableList()
-                addresses.remove(event.address)
-                updateForm(addresses = addresses)
-            }
+            is UpdateFormEvent -> handleUpdateFormEvent(event)
+            is AddAddressEvent -> handleAddAddressEvent(event)
+            is RemoveAddressEvent -> handleRemoveAddressEvent(event)
+            is SaveEmployeeEvent -> handleSaveEmployeeEvent(event)
         }
+    }
+
+    private fun handleUpdateFormEvent(event: UpdateFormEvent) {
+        updateForm(
+            firstName = event.firstName,
+            lastName = event.lastName,
+            gender = event.gender,
+            address = event.address
+        )
+    }
+
+    private fun handleAddAddressEvent(event: AddAddressEvent) {
+        updateForm(
+            address = "",
+            addresses = currentSuccessState.addresses.plus(Address(currentSuccessState.address))
+        )
+    }
+
+    private fun handleRemoveAddressEvent(event: RemoveAddressEvent) {
+        val addresses = currentSuccessState.addresses.toMutableList()
+        addresses.remove(event.address)
+        updateForm(addresses = addresses)
+    }
+
+    private fun handleSaveEmployeeEvent(event: SaveEmployeeEvent) {
+
     }
 
     private fun loadGenders() {
         safeLaunch {
+            delay(3000)
             val genders = employeeRepository.getGenders()
-            updateUiState { AddEmployeeContract.State.Initial(genders) }
+            updateUiState { UiState.Success(AddEmployeeContract.State(genders = genders)) }
         }
     }
 
-    fun updateForm(
+    private fun updateForm(
         firstName: String? = null,
         lastName: String? = null,
         gender: String? = null,
         address: String? = null,
         addresses: List<Address>? = null,
     ) {
-        updateUiState {
-            AddEmployeeContract.State.FormUpdated(
-                firstName = firstName ?: currentState.firstName,
-                lastName = lastName ?: currentState.lastName,
-                gender = gender ?: currentState.gender,
-                address = address ?: currentState.address,
-                addresses = addresses ?: currentState.addresses
+        UiState.Success(
+            AddEmployeeContract.State(
+                firstName = firstName ?: currentSuccessState.firstName,
+                lastName = lastName ?: currentSuccessState.lastName,
+                gender = gender ?: currentSuccessState.gender,
+                address = address ?: currentSuccessState.address,
+                addresses = addresses ?: currentSuccessState.addresses
             )
-        }
-    }
-
-    fun onAddAddressClicked() {
-        setUiEvent(AddEmployeeContract.Event.AddAddressEvent)
-    }
-
-    fun onRemoveAddressClicked(address: Address) {
-        setUiEvent(AddEmployeeContract.Event.RemoveAddressEvent(address))
+        )
     }
 }

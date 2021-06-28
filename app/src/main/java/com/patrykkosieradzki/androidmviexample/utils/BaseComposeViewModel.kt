@@ -10,17 +10,17 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AllOpen
-abstract class BaseComposeViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect>(
-    final val initialState: STATE
+abstract class BaseComposeViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
+    final val initialState: UiState<STATE>
 ) : ViewModel() {
 
     // Get Current State
-    val currentState: STATE
+    val currentState: UiState<STATE>
         get() = uiState.value
-    val inProgress: Flow<Boolean>
-        get() = uiState.map { it.isLoading }
+    val currentSuccessState: STATE
+        get() = (uiState.value as UiState.Success).data
 
-    private val _uiState: MutableStateFlow<STATE> = MutableStateFlow(initialState)
+    private val _uiState: MutableStateFlow<UiState<STATE>> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
     val eventHandler: (EVENT) -> Unit = ::handleEvent
@@ -47,7 +47,7 @@ abstract class BaseComposeViewModel<STATE : UiState, EVENT : UiEvent, EFFECT : U
 
     abstract fun handleEvent(event: EVENT)
 
-    protected fun updateUiState(update: (STATE) -> STATE) {
+    protected fun updateUiState(update: (UiState<STATE>) -> UiState<STATE>) {
         val newState = update(currentState)
         if (newState != currentState) {
             _uiState.value = newState

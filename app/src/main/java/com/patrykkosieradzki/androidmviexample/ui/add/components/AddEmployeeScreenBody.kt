@@ -1,15 +1,10 @@
 package com.patrykkosieradzki.androidmviexample.ui.add.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.patrykkosieradzki.androidmviexample.R
@@ -49,8 +44,6 @@ fun AddEmployeeForm(
     state: AddEmployeeContract.State,
     eventHandler: (AddEmployeeContract.Event) -> Unit
 ) {
-    var isDropdownMenuExpanded by remember { mutableStateOf(false) }
-
     Column {
         OutlinedTextField(
             label = stringResource(id = R.string.first_name),
@@ -66,19 +59,10 @@ fun AddEmployeeForm(
                 eventHandler.invoke(UpdateFormEvent(lastName = it))
             }
         )
-        DropdownMenu(
-            expanded = isDropdownMenuExpanded,
-            onDismissRequest = { isDropdownMenuExpanded = false }
-        ) {
-            state.genders.forEach { gender ->
-                DropdownMenuItem(onClick = {
-                    isDropdownMenuExpanded = false
-                    eventHandler.invoke(UpdateFormEvent(gender = gender.name))
-                }) {
-                    Text(gender.name)
-                }
-            }
-        }
+        EmployeeGenderDropdownMenu(
+            genders = state.genders,
+            eventHandler = eventHandler
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -107,49 +91,10 @@ fun AddEmployeeForm(
                 }
             }
         }
-        LazyColumn(
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            modifier = Modifier.heightIn(max = 200.dp)
-        ) {
-            itemsIndexed(state.addresses) { index, item ->
-                EmployeeAddressListItem(
-                    name = item.name,
-                    onRemoveClicked = {
-                        eventHandler.invoke(AddEmployeeContract.Event.RemoveAddressEvent(item))
-                    }
-                )
-                if (index < state.addresses.size - 1)
-                    Divider(color = Color.Transparent, thickness = 10.dp)
-            }
-        }
-    }
-}
-
-@Composable
-fun EmployeeAddressListItem(
-    name: String,
-    onRemoveClicked: () -> Unit
-) {
-    Card(
-        elevation = 2.dp,
-        backgroundColor = Color.White,
-        shape = RoundedCornerShape(corner = CornerSize(16.dp))
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(text = name)
-            Button(
-                onClick = onRemoveClicked,
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Text(text = stringResource(id = R.string.remove))
-            }
-        }
+        EmployeeAddressList(
+            addresses = state.addresses,
+            eventHandler = eventHandler
+        )
     }
 }
 
@@ -159,7 +104,7 @@ fun OutlinedTextField(
     value: String = "",
     onChange: (String) -> Unit
 ) {
-    androidx.compose.material.OutlinedTextField(
+    OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
         onValueChange = onChange,
