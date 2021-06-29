@@ -29,7 +29,7 @@ val appModule = module {
     }
 
     viewModel {
-        AddEmployeeViewModel(employeeRepository = get())
+        AddEmployeeViewModel(getGendersUseCase = get())
     }
 
     viewModel {

@@ -26,7 +26,6 @@ class AddEmployeeContract {
         val address: String = "",
         val addresses: List<Address> = emptyList(),
         val genders: List<Gender> = emptyList(),
-        val isFormValid: Boolean = true,
     )
 
     sealed class Effect : UiEffect

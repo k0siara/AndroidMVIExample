@@ -41,16 +41,6 @@ abstract class BaseComposeViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
 
     protected val handler = CoroutineExceptionHandler { _, exception ->
         Timber.e(exception, COROUTINE_EXCEPTION_HANDLER_MESSAGE)
-//        val exceptionToShow = updateError(exception)
-//        if (exceptionToShow.throwable != null) {
-// //            showErrorEvent.fireEvent(exceptionToShow)
-//        }
-    }
-
-    protected fun navigateTo(navDirections: NavDirections) {
-        safeLaunch {
-            _navigationCommandEvent.send(NavigationCommand.To(navDirections))
-        }
     }
 
     abstract fun handleEvent(event: EVENT)
@@ -79,18 +69,6 @@ abstract class BaseComposeViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
 
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(handler, block = block)
-    }
-
-    fun setLoadingState() {
-        updateUiState { UiState.Loading }
-    }
-
-    fun setSuccessState(state: STATE) {
-        updateUiState { UiState.Success(state) }
-    }
-
-    fun setErrorState() {
-        updateUiState { UiState.Failure(Exception()) }
     }
 
     companion object {

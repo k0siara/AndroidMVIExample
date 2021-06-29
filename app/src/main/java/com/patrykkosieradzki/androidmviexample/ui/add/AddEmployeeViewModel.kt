@@ -1,17 +1,18 @@
 package com.patrykkosieradzki.androidmviexample.ui.add
 
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
-import com.patrykkosieradzki.androidmviexample.domain.repositories.EmployeeRepository
+import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
+import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.State
 import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState
 import com.patrykkosieradzki.androidmviexample.utils.successData
 import kotlinx.coroutines.delay
 
 class AddEmployeeViewModel(
-    private val employeeRepository: EmployeeRepository
+    private val getGendersUseCase: GetGendersUseCase
 ) :
-    BaseComposeViewModel<AddEmployeeContract.State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
+    BaseComposeViewModel<State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
         initialState = UiState.Loading
     ) {
 
@@ -22,7 +23,7 @@ class AddEmployeeViewModel(
     override fun handleEvent(event: AddEmployeeContract.Event) {
         when (event) {
             is UpdateFormEvent -> handleUpdateFormEvent(event)
-            is AddAddressEvent -> handleAddAddressEvent(event)
+            is AddAddressEvent -> handleAddAddressEvent()
             is RemoveAddressEvent -> handleRemoveAddressEvent(event)
             is SaveEmployeeEvent -> handleSaveEmployeeEvent()
         }
@@ -39,11 +40,11 @@ class AddEmployeeViewModel(
         }
     }
 
-    private fun handleAddAddressEvent(event: AddAddressEvent) {
+    private fun handleAddAddressEvent() {
         updateUiSuccessState {
             it.copy(
                 address = "",
-                addresses = currentState.successData.addresses.plus(Address(currentState.successData.address))
+                addresses = it.addresses.plus(Address(it.address))
             )
         }
     }
@@ -64,6 +65,9 @@ class AddEmployeeViewModel(
                 firstName.isNotEmpty() && lastName.isNotEmpty() && gender.isNotEmpty() && addresses.isNotEmpty()
             if (!isValid) {
                 showSnackbar("Form is not valid")
+            } else {
+                showSnackbar("New employee saved! :)")
+                clearForm()
             }
         }
     }
@@ -71,8 +75,20 @@ class AddEmployeeViewModel(
     private fun loadGenders() {
         safeLaunch {
             delay(1000)
-            val genders = employeeRepository.getGenders()
-            updateUiState { UiState.Success(AddEmployeeContract.State(genders = genders)) }
+            val genders = getGendersUseCase()
+            updateUiState { UiState.Success(State(genders = genders)) }
+        }
+    }
+
+    private fun clearForm() {
+        updateUiSuccessState {
+            it.copy(
+                firstName = "",
+                lastName = "",
+                gender = "",
+                address = "",
+                addresses = emptyList()
+            )
         }
     }
 }
