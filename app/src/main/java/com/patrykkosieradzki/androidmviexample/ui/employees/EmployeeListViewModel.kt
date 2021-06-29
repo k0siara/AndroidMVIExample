@@ -7,14 +7,15 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.patrykkosieradzki.androidmviexample.storage.dao.EmployeeDao
 import com.patrykkosieradzki.androidmviexample.storage.model.EmployeeWithGenderAndAddresses
-import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
+import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
+import com.patrykkosieradzki.androidmviexample.utils.UiState
 import kotlinx.coroutines.flow.Flow
 
 class EmployeeListViewModel(
     private val employeeDao: EmployeeDao
 ) :
-    BaseViewModel<EmployeeListContract.State, EmployeeListContract.Event, EmployeeListContract.Effect>(
-        initialState = EmployeeListContract.State.Success()
+    BaseComposeViewModel<EmployeeListContract.State, EmployeeListContract.Event, EmployeeListContract.Effect>(
+        initialState = UiState.Loading
     ) {
 
     val employees: Flow<PagingData<EmployeeWithGenderAndAddresses>> = Pager(
@@ -29,24 +30,8 @@ class EmployeeListViewModel(
 
     override fun handleEvent(event: EmployeeListContract.Event) {}
 
-    fun setLoadingState() {
-        updateUiState { EmployeeListContract.State.Loading() }
-    }
-
-    fun setSuccessState() {
-        updateUiState { EmployeeListContract.State.Success() }
-    }
-
-    fun setEmptyState() {
-        updateUiState { EmployeeListContract.State.Empty() }
-    }
-
-    fun setErrorState() {
-        updateUiState { EmployeeListContract.State.Error() }
-    }
-
     fun onAddEmployeeButtonClicked() {
-        navigateTo(EmployeeListFragmentDirections.toAddEmployeeFragment())
+//        navigateTo(EmployeeListFragmentDirections.toAddEmployeeFragment())
     }
 
     companion object {

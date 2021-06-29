@@ -26,7 +26,7 @@ import timber.log.Timber
 import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
-abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
+abstract class BaseFragment<STATE, EVENT : UiEvent, EFFECT : UiEffect,
     VM : BaseViewModel<STATE, EVENT, EFFECT>, VDB : ViewDataBinding>(
     @LayoutRes private val layoutId: Int,
     vmKClass: KClass<VM>
@@ -59,7 +59,9 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
         _binding = DataBindingUtil.inflate<VDB>(inflater, layoutId, container, false)
             .apply {
                 lifecycleOwner = viewLifecycleOwner
-                setVariable(BR.vm, viewModel)
+
+//                Uncomment if you have any databinding
+//                setVariable(BR.vm, viewModel)
             }
         return RelativeLayout(requireContext()).apply {
             layoutParams = RelativeLayout.LayoutParams(
@@ -126,7 +128,7 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent, EFFECT : UiEffect,
         }
     }
 
-    abstract fun handleState(it: STATE)
+    abstract fun handleState(it: UiState<STATE>)
 
     open fun setupViews(view: View) {}
 

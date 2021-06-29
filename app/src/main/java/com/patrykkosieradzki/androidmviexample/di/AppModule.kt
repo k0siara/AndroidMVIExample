@@ -33,10 +33,6 @@ val appModule = module {
     }
 
     viewModel {
-        AddEmployeeViewModel(employeeRepository = get())
-    }
-
-    viewModel {
         EmployeeDetailsViewModel()
     }
 }

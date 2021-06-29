@@ -5,6 +5,7 @@ import com.patrykkosieradzki.androidmviexample.domain.repositories.EmployeeRepos
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
 import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState
+import com.patrykkosieradzki.androidmviexample.utils.asSuccess
 import kotlinx.coroutines.delay
 
 class AddEmployeeViewModel(
@@ -39,12 +40,12 @@ class AddEmployeeViewModel(
     private fun handleAddAddressEvent(event: AddAddressEvent) {
         updateForm(
             address = "",
-            addresses = currentSuccessState.addresses.plus(Address(currentSuccessState.address))
+            addresses = currentState.asSuccess.addresses.plus(Address(currentState.asSuccess.address))
         )
     }
 
     private fun handleRemoveAddressEvent(event: RemoveAddressEvent) {
-        val addresses = currentSuccessState.addresses.toMutableList()
+        val addresses = currentState.asSuccess.addresses.toMutableList()
         addresses.remove(event.address)
         updateForm(addresses = addresses)
     }
@@ -68,14 +69,17 @@ class AddEmployeeViewModel(
         address: String? = null,
         addresses: List<Address>? = null,
     ) {
-        UiState.Success(
-            AddEmployeeContract.State(
-                firstName = firstName ?: currentSuccessState.firstName,
-                lastName = lastName ?: currentSuccessState.lastName,
-                gender = gender ?: currentSuccessState.gender,
-                address = address ?: currentSuccessState.address,
-                addresses = addresses ?: currentSuccessState.addresses
+        updateUiState {
+            UiState.Success(
+                AddEmployeeContract.State(
+                    firstName = firstName ?: it.asSuccess.firstName,
+                    lastName = lastName ?: it.asSuccess.lastName,
+                    gender = gender ?: it.asSuccess.gender,
+                    address = address ?: it.asSuccess.address,
+                    addresses = addresses ?: it.asSuccess.addresses
+                )
             )
-        )
+        }
+
     }
 }

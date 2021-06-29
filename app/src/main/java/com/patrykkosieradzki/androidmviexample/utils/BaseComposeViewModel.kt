@@ -1,24 +1,25 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AllOpen
 abstract class BaseComposeViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
-    final val initialState: UiState<STATE>
+    final val initialState: UiState<STATE> = UiState.Loading
 ) : ViewModel() {
 
     // Get Current State
     val currentState: UiState<STATE>
         get() = uiState.value
-    val currentSuccessState: STATE
-        get() = (uiState.value as UiState.Success).data
 
     private val _uiState: MutableStateFlow<UiState<STATE>> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
@@ -60,6 +61,18 @@ abstract class BaseComposeViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
 
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(handler, block = block)
+    }
+
+    fun setLoadingState() {
+        updateUiState { UiState.Loading }
+    }
+
+    fun setSuccessState(state: STATE) {
+        updateUiState { UiState.Success(state) }
+    }
+
+    fun setErrorState() {
+        updateUiState { UiState.Failure(Exception()) }
     }
 
     companion object {

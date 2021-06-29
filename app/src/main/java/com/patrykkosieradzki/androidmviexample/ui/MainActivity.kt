@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
 
         GlobalScope.launch {
             demoDataGenerator.loadDemoDataIntoDB()

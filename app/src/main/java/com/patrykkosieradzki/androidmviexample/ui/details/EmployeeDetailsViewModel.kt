@@ -1,10 +1,11 @@
 package com.patrykkosieradzki.androidmviexample.ui.details
 
-import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
+import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
+import com.patrykkosieradzki.androidmviexample.utils.UiState
 
 class EmployeeDetailsViewModel :
-    BaseViewModel<EmployeeDetailsContract.State, EmployeeDetailsContract.Event, EmployeeDetailsContract.Effect>(
-        initialState = EmployeeDetailsContract.State.Loading()
+    BaseComposeViewModel<EmployeeDetailsContract.State, EmployeeDetailsContract.Event, EmployeeDetailsContract.Effect>(
+        initialState = UiState.Loading
     ) {
     override fun handleEvent(event: EmployeeDetailsContract.Event) {
     }

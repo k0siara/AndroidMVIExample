@@ -32,6 +32,7 @@ fun <STATE, EVENT : UiEvent, EFFECT : UiEffect> BaseComposeScreen(
     }
     val state by locationFlowLifecycleAware.collectAsState(viewModel.initialState)
 
+
     when (state) {
         is UiState.Loading -> renderOnLoading.invoke(viewModel.eventHandler)
         is UiState.Success -> child.invoke(state, viewModel.eventHandler)
