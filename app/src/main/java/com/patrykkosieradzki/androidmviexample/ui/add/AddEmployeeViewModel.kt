@@ -5,7 +5,7 @@ import com.patrykkosieradzki.androidmviexample.domain.repositories.EmployeeRepos
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
 import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState
-import com.patrykkosieradzki.androidmviexample.utils.asSuccess
+import com.patrykkosieradzki.androidmviexample.utils.successData
 import kotlinx.coroutines.delay
 
 class AddEmployeeViewModel(
@@ -24,62 +24,55 @@ class AddEmployeeViewModel(
             is UpdateFormEvent -> handleUpdateFormEvent(event)
             is AddAddressEvent -> handleAddAddressEvent(event)
             is RemoveAddressEvent -> handleRemoveAddressEvent(event)
-            is SaveEmployeeEvent -> handleSaveEmployeeEvent(event)
+            is SaveEmployeeEvent -> handleSaveEmployeeEvent()
         }
     }
 
     private fun handleUpdateFormEvent(event: UpdateFormEvent) {
-        updateForm(
-            firstName = event.firstName,
-            lastName = event.lastName,
-            gender = event.gender,
-            address = event.address
-        )
+        updateUiSuccessState {
+            it.copy(
+                firstName = event.firstName ?: it.firstName,
+                lastName = event.lastName ?: it.lastName,
+                gender = event.gender ?: it.gender,
+                address = event.address ?: it.address
+            )
+        }
     }
 
     private fun handleAddAddressEvent(event: AddAddressEvent) {
-        updateForm(
-            address = "",
-            addresses = currentState.asSuccess.addresses.plus(Address(currentState.asSuccess.address))
-        )
+        updateUiSuccessState {
+            it.copy(
+                address = "",
+                addresses = currentState.successData.addresses.plus(Address(currentState.successData.address))
+            )
+        }
     }
 
     private fun handleRemoveAddressEvent(event: RemoveAddressEvent) {
-        val addresses = currentState.asSuccess.addresses.toMutableList()
+        val addresses = currentState.successData.addresses.toMutableList()
         addresses.remove(event.address)
-        updateForm(addresses = addresses)
+        updateUiSuccessState {
+            it.copy(
+                addresses = addresses
+            )
+        }
     }
 
-    private fun handleSaveEmployeeEvent(event: SaveEmployeeEvent) {
-
+    private fun handleSaveEmployeeEvent() {
+        currentState.successData.run {
+            val isValid =
+                firstName.isNotEmpty() && lastName.isNotEmpty() && gender.isNotEmpty() && addresses.isNotEmpty()
+            if (!isValid) {
+                showSnackbar("Form is not valid")
+            }
+        }
     }
 
     private fun loadGenders() {
         safeLaunch {
-            delay(3000)
+            delay(1000)
             val genders = employeeRepository.getGenders()
             updateUiState { UiState.Success(AddEmployeeContract.State(genders = genders)) }
         }
-    }
-
-    private fun updateForm(
-        firstName: String? = null,
-        lastName: String? = null,
-        gender: String? = null,
-        address: String? = null,
-        addresses: List<Address>? = null,
-    ) {
-        updateUiState {
-            UiState.Success(
-                AddEmployeeContract.State(
-                    firstName = firstName ?: it.asSuccess.firstName,
-                    lastName = lastName ?: it.asSuccess.lastName,
-                    gender = gender ?: it.asSuccess.gender,
-                    address = address ?: it.asSuccess.address,
-                    addresses = addresses ?: it.asSuccess.addresses
-                )
-            )
-        }
-
     }
 }

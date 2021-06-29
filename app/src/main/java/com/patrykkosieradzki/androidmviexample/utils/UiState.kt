@@ -9,5 +9,5 @@ sealed class UiState<out T> {
     data class SwipeRefreshFailure(val exception: Exception) : UiState<Nothing>()
 }
 
-val <T> UiState<T>.asSuccess: T
+val <T> UiState<T>.successData: T
     get() = (this as UiState.Success).data

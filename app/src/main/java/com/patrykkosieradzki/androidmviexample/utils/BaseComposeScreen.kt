@@ -1,18 +1,17 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.patrykkosieradzki.androidmviexample.ui.composables.CenteredCircularProgressIndicator
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun <STATE, EVENT : UiEvent, EFFECT : UiEffect> BaseComposeScreen(
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     viewModel: BaseComposeViewModel<STATE, EVENT, EFFECT>,
     renderOnLoading: @Composable (eventHandler: (EVENT) -> Unit) -> Unit = {
         Scaffold {
@@ -24,22 +23,55 @@ fun <STATE, EVENT : UiEvent, EFFECT : UiEffect> BaseComposeScreen(
             Text("Error occurred")
         }
     },
-    child: @Composable (state: UiState<STATE>, eventHandler: (EVENT) -> Unit) -> Unit
+    renderOnSuccess: @Composable (state: UiState<STATE>, eventHandler: (EVENT) -> Unit) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val locationFlowLifecycleAware = remember(viewModel.uiState, lifecycleOwner) {
-        viewModel.uiState.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-    }
-    val state by locationFlowLifecycleAware.collectAsState(viewModel.initialState)
-
+    val state by lifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        stateFlow = viewModel.uiState,
+        initialState = viewModel.initialState
+    )
+    val snackbarState by lifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        stateFlow = viewModel.snackbarState,
+        initialState = viewModel.initialSnackbarState
+    )
 
     when (state) {
         is UiState.Loading -> renderOnLoading.invoke(viewModel.eventHandler)
-        is UiState.Success -> child.invoke(state, viewModel.eventHandler)
+        is UiState.Success -> {
+            renderOnSuccess.invoke(state, viewModel.eventHandler)
+        }
         is UiState.Failure -> renderOnFailure.invoke(viewModel.eventHandler)
 //        Retrying -> // a different loader
 //        SwipeRefreshing -> // show swipe refresh loader
 //        SwipeRefreshingFailure -> // show error
         else -> renderOnLoading.invoke(viewModel.eventHandler)
     }
+
+    if (snackbarState.isShown) {
+        LaunchedEffect(scaffoldState.snackbarHostState) {
+            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(snackbarState.message)
+
+            when (snackbarResult) {
+                SnackbarResult.Dismissed -> viewModel.dismissSnackbar()
+                SnackbarResult.ActionPerformed -> {
+                }
+                else -> {
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun <T> lifecycleAwareState(
+    lifecycleOwner: LifecycleOwner,
+    stateFlow: StateFlow<T>,
+    initialState: T
+): State<T> {
+    val lifecycleAwareStateFlow = remember(stateFlow, lifecycleOwner) {
+        stateFlow.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+    }
+    return lifecycleAwareStateFlow.collectAsState(initialState)
 }

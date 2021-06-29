@@ -59,7 +59,8 @@ fun AddEmployeeForm(
                 eventHandler.invoke(UpdateFormEvent(lastName = it))
             }
         )
-        EmployeeGenderDropdownMenu(
+        EmployeeGenderRadioButtons(
+            currentGender = state.gender,
             genders = state.genders,
             eventHandler = eventHandler
         )

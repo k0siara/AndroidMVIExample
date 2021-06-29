@@ -25,7 +25,7 @@ fun NavGraph(
         startDestination = MyDestination.ADD_EMPLOYEE_PATH
     ) {
         composable(MyDestination.ADD_EMPLOYEE_PATH) {
-            AddEmployeeScreen()
+            AddEmployeeScreen(scaffoldState = scaffoldState)
         }
     }
 }

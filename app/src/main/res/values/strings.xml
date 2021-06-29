@@ -7,6 +7,7 @@
     <string name="last_name">Last name</string>
     <string name="last_name_hint">Enter last name</string>
     <string name="gender">Gender</string>
+    <string name="select_gender">Select gender</string>
 
     <string name="address">Address</string>
     <string name="add_address">Add address</string>
