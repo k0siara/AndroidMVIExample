@@ -19,5 +19,5 @@ data class EmployeeWithGenderAndAddresses(
         parentColumn = "employeeId",
         entityColumn = "employeeId"
     )
-    val playlists: List<AddressEntity>
+    val addresses: List<AddressEntity>
 )

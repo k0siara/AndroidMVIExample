@@ -22,6 +22,7 @@ class AddEmployeeContract {
     data class State(
         val firstName: String = "",
         val lastName: String = "",
+        val age: Int = 0,
         val gender: String = "",
         val address: String = "",
         val addresses: List<Address> = emptyList(),

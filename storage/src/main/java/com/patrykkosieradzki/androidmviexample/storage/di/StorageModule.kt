@@ -16,14 +16,10 @@ val storageModule = module {
         ).build()
     }
 
-    single { get<AppDatabase>().genderDao() }
-    single { get<AppDatabase>().addressDao() }
     single { get<AppDatabase>().employeeDao() }
 
     single<DemoDataGenerator> {
         DatabaseDemoDataGenerator(
-            genderDao = get(),
-            addressDao = get(),
             employeeDao = get()
         )
     }
@@ -31,7 +27,6 @@ val storageModule = module {
     single<EmployeeRepository> {
         LocalEmployeeRepository(
             employeeDao = get(),
-            genderDao = get()
         )
     }
 }

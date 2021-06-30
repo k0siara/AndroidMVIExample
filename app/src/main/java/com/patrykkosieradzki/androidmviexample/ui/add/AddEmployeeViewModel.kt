@@ -1,7 +1,9 @@
 package com.patrykkosieradzki.androidmviexample.ui.add
 
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
+import com.patrykkosieradzki.androidmviexample.domain.model.Employee
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
+import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCase
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.State
 import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
@@ -10,7 +12,8 @@ import com.patrykkosieradzki.androidmviexample.utils.successData
 import kotlinx.coroutines.delay
 
 class AddEmployeeViewModel(
-    private val getGendersUseCase: GetGendersUseCase
+    private val getGendersUseCase: GetGendersUseCase,
+    private val saveEmployeeUseCase: SaveEmployeeUseCase
 ) :
     BaseComposeViewModel<State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
         initialState = UiState.Loading
@@ -63,11 +66,20 @@ class AddEmployeeViewModel(
         currentState.successData.run {
             val isValid =
                 firstName.isNotEmpty() && lastName.isNotEmpty() && gender.isNotEmpty() && addresses.isNotEmpty()
-            if (!isValid) {
-                showSnackbar("Form is not valid")
+            if (isValid) {
+                safeLaunch {
+                    saveEmployeeUseCase(Employee(
+                        firstName = firstName,
+                        lastName = lastName,
+                        age = age,
+                        gender = gender,
+                        addresses = addresses
+                    ))
+                    showSnackbar("New employee saved! :)")
+                    clearForm()
+                }
             } else {
-                showSnackbar("New employee saved! :)")
-                clearForm()
+                showSnackbar("Form is not valid")
             }
         }
     }

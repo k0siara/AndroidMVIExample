@@ -1,23 +1,19 @@
 package com.patrykkosieradzki.androidmviexample.storage
 
 import com.patrykkosieradzki.androidmviexample.domain.DemoDataGenerator
-import com.patrykkosieradzki.androidmviexample.storage.dao.AddressDao
 import com.patrykkosieradzki.androidmviexample.storage.dao.EmployeeDao
-import com.patrykkosieradzki.androidmviexample.storage.dao.GenderDao
 import com.patrykkosieradzki.androidmviexample.storage.entity.AddressEntity
 import com.patrykkosieradzki.androidmviexample.storage.entity.EmployeeEntity
 import com.patrykkosieradzki.androidmviexample.storage.entity.GenderEntity
 
 class DatabaseDemoDataGenerator(
-    private val genderDao: GenderDao,
-    private val addressDao: AddressDao,
     private val employeeDao: EmployeeDao
 ) : DemoDataGenerator {
 
     override suspend fun loadDemoDataIntoDB() {
-        genderDao.insertAll(GENDERS)
-        employeeDao.insertAll(EMPLOYEES)
-        addressDao.insertAll(ADDRESSES)
+        employeeDao.insertAllGenders(GENDERS)
+        employeeDao.insertAllEmployees(EMPLOYEES)
+        employeeDao.insertAllAddresses(ADDRESSES)
     }
 
     companion object {

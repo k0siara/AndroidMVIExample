@@ -4,6 +4,8 @@ import com.patrykkosieradzki.androidmviexample.ExampleAppConfiguration
 import com.patrykkosieradzki.androidmviexample.domain.AppConfiguration
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCaseImpl
+import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCase
+import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCaseImpl
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeViewModel
 import com.patrykkosieradzki.androidmviexample.ui.details.EmployeeDetailsViewModel
 import com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListViewModel
@@ -22,6 +24,12 @@ val appModule = module {
         )
     }
 
+    factory<SaveEmployeeUseCase> {
+        SaveEmployeeUseCaseImpl(
+            employeeRepository = get()
+        )
+    }
+
     viewModel {
         EmployeeListViewModel(
             employeeDao = get()
@@ -29,7 +37,10 @@ val appModule = module {
     }
 
     viewModel {
-        AddEmployeeViewModel(getGendersUseCase = get())
+        AddEmployeeViewModel(
+            getGendersUseCase = get(),
+            saveEmployeeUseCase = get()
+        )
     }
 
     viewModel {
