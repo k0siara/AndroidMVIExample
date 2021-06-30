@@ -32,6 +32,7 @@ fun App() {
                 drawerContent = {
                     AppDrawer(
                         currentRoute = getTitleForRoute(currentRoute),
+                        navController = navController
                     )
                 }
             ) {
@@ -46,7 +47,8 @@ fun App() {
 
 fun getTitleForRoute(route: String): String {
     return when (route) {
-        "add-employee" -> "Add Employee"
+        MyDestination.ADD_EMPLOYEE_PATH -> "Add Employee"
+        MyDestination.EMPLOYEE_LIST_PATH -> "Employee list"
         else -> "Unknown route"
     }
 }

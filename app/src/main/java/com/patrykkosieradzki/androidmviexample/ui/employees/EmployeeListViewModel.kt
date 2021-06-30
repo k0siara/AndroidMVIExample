@@ -15,7 +15,7 @@ class EmployeeListViewModel(
     private val employeeDao: EmployeeDao
 ) :
     BaseComposeViewModel<EmployeeListContract.State, EmployeeListContract.Event, EmployeeListContract.Effect>(
-        initialState = UiState.Loading
+        initialState = UiState.Success(EmployeeListContract.State())
     ) {
 
     val employees: Flow<PagingData<EmployeeWithGenderAndAddresses>> = Pager(
