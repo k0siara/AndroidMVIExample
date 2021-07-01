@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 class EmployeeListViewModel(
     private val employeeDao: EmployeeDao
 ) :
-    BaseComposeViewModel<EmployeeListContract.State, EmployeeListContract.Event, EmployeeListContract.Effect>(
+    BaseComposeViewModel<EmployeeListContract.State, EmployeeListContract.Event>(
         initialState = UiState.Success(EmployeeListContract.State())
     ) {
 

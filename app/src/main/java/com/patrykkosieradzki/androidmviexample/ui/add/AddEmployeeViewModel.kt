@@ -15,7 +15,7 @@ class AddEmployeeViewModel(
     private val getGendersUseCase: GetGendersUseCase,
     private val saveEmployeeUseCase: SaveEmployeeUseCase
 ) :
-    BaseComposeViewModel<State, AddEmployeeContract.Event, AddEmployeeContract.Effect>(
+    BaseComposeViewModel<State, AddEmployeeContract.Event>(
         initialState = UiState.Loading
     ) {
 

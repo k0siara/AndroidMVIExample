@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AllOpen
-abstract class BaseComposeViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
+abstract class BaseComposeViewModel<STATE, EVENT : UiEvent>(
     final val initialState: UiState<STATE> = UiState.Loading,
     final val initialSnackbarState: SnackbarState = SnackbarState()
 ) : ViewModel() {
