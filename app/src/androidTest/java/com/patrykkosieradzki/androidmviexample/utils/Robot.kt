@@ -1,7 +1,9 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
-open class Robot {
+import java.util.concurrent.TimeUnit
 
+open class Robot {
+    fun wait(seconds: Int) = TimeUnit.SECONDS.sleep(seconds.toLong())
 }
 
 abstract class RobotTest<R : Robot> {

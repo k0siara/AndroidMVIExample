@@ -157,10 +157,6 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.0.0'
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test:rules:1.3.0'
-    androidTestImplementation(deps.koin_test) {
-        exclude group: 'org.mockito'
-    }
-    testImplementation deps.koin_test
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation "com.github.hadilq.liveevent:liveevent:1.2.0"

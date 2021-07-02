@@ -34,10 +34,6 @@ abstract class BaseViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
 
     protected val handler = CoroutineExceptionHandler { _, exception ->
         Timber.e(exception, COROUTINE_EXCEPTION_HANDLER_MESSAGE)
-//        val exceptionToShow = updateError(exception)
-//        if (exceptionToShow.throwable != null) {
-// //            showErrorEvent.fireEvent(exceptionToShow)
-//        }
     }
 
     open fun initialize() {}
@@ -49,10 +45,6 @@ abstract class BaseViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
     }
 
     abstract fun handleEvent(event: EVENT)
-
-//    protected open fun updateError(exception: Throwable): ErrorEvent {
-//        return ErrorEvent(exception, isInitialState && _viewState.valueNN.inProgress)
-//    }
 
     protected fun setUiEvent(newEvent: EVENT) {
         viewModelScope.launch { _event.emit(newEvent) }
@@ -69,27 +61,11 @@ abstract class BaseViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
         viewModelScope.launch { _effect.send(effectBuilder()) }
     }
 
-//    fun updateUiStateToSuccess() {
-//        updateUiState {
-//            @Suppress("UNCHECKED_CAST")
-//            it.toSuccess() as STATE
-//        }
-//    }
-
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(handler, block = block)
     }
-
-//    protected fun showToast(text: String) {
-//        showToastEvent.fireEvent(text)
-//    }
 
     companion object {
         private const val COROUTINE_EXCEPTION_HANDLER_MESSAGE = "ExceptionHandler"
     }
 }
-
-data class ErrorEvent(
-    val throwable: Throwable? = null,
-    val isInitialState: Boolean = false
-)

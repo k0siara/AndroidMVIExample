@@ -10,9 +10,9 @@ import com.patrykkosieradzki.androidmviexample.ui.composables.CenteredCircularPr
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun <STATE, EVENT : UiEvent, EFFECT : UiEffect> BaseComposeScreen(
+fun <STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE, EVENT>> BaseComposeScreen(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    viewModel: BaseComposeViewModel<STATE, EVENT, EFFECT>,
+    viewModel: VM,
     renderOnLoading: @Composable (eventHandler: (EVENT) -> Unit) -> Unit = {
         Scaffold {
             CenteredCircularProgressIndicator()

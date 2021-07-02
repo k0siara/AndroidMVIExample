@@ -2,9 +2,6 @@ package com.patrykkosieradzki.androidmviexample.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavDirections
-import com.google.android.material.snackbar.Snackbar
-import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -16,8 +13,8 @@ import timber.log.Timber
 
 @AllOpen
 abstract class BaseComposeViewModel<STATE, EVENT : UiEvent>(
-    final val initialState: UiState<STATE> = UiState.Loading,
-    final val initialSnackbarState: SnackbarState = SnackbarState()
+    val initialState: UiState<STATE> = UiState.Loading,
+    val initialSnackbarState: SnackbarState = SnackbarState()
 ) : ViewModel() {
 
     // Get Current State
@@ -27,11 +24,12 @@ abstract class BaseComposeViewModel<STATE, EVENT : UiEvent>(
     val currentSnackbarState: SnackbarState
         get() = snackbarState.value
 
-    private val _uiState: MutableStateFlow<UiState<STATE>> = MutableStateFlow(initialState)
+    private val _uiState: MutableStateFlow<UiState<STATE>> by lazy { MutableStateFlow(initialState) }
     val uiState = _uiState.asStateFlow()
 
-    private val _snackbarState: MutableStateFlow<SnackbarState> =
+    private val _snackbarState: MutableStateFlow<SnackbarState> by lazy {
         MutableStateFlow(initialSnackbarState)
+    }
     val snackbarState = _snackbarState.asStateFlow()
 
     val eventHandler: (EVENT) -> Unit = ::handleEvent
