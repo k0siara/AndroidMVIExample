@@ -1,8 +1,7 @@
 package com.patrykkosieradzki.androidmviexample.ui
 
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeScreen
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeViewModel
@@ -15,14 +14,14 @@ import org.junit.Test
 class AddEmployeeScreenTest : RobotTest<AddEmployeeScreenTestRobot>() {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+    val composeTestRule = createComposeRule()
 
     @Test
     fun exampleTest() {
         withRobot {
             startScreen()
             wait(1)
-            // screenshot
+            captureAndCompare("AddEmployeeScreen_01")
         }
     }
 
@@ -30,9 +29,9 @@ class AddEmployeeScreenTest : RobotTest<AddEmployeeScreenTestRobot>() {
 }
 
 class AddEmployeeScreenTestRobot(
-    composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
+    composeTestRule: ComposeContentTestRule
 ) :
-    ComposeRobot<AddEmployeeContract.State, AddEmployeeContract.Event, AddEmployeeViewModel, MainActivity>(
+    ComposeRobot<AddEmployeeContract.State, AddEmployeeContract.Event, AddEmployeeViewModel>(
         AddEmployeeViewModel::class.java,
         composeTestRule
     ) {

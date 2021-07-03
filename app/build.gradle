@@ -1,4 +1,4 @@
-ext.enableScreenshots = gradle.startParameter.taskNames.size() > 0 && gradle.startParameter.taskNames.get(0) == "connectedDebugAndroidTest"
+ext.screenshotsEnabled = gradle.startParameter.taskNames.size() > 0 && gradle.startParameter.taskNames.get(0) == "connectedDebugAndroidTest"
 
 buildscript {
     repositories {
@@ -33,9 +33,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunnerArguments clearPackageData: 'true'
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        if (project.ext.enableScreenshots == true) {
-            testInstrumentationRunnerArguments shot: 'true'
+        testInstrumentationRunner "com.patrykkosieradzki.androidmviexample.utils.ScreenshotsRunner"
+        if (project.ext.screenshotsEnabled == true) {
+            testInstrumentationRunnerArguments screenshotsEnabled: 'true'
         }
 
         vectorDrawables {
@@ -44,7 +44,7 @@ android {
     }
 
     testOptions {
-        if (project.ext.enableScreenshots == false) {
+        if (project.ext.screenshotsEnabled == true) {
             if (!isIdeBuild) {
                 execution 'ANDROIDX_TEST_ORCHESTRATOR'
             }
@@ -190,9 +190,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
-    // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.0-beta09")
-// Needed for createComposeRule, but not createAndroidComposeRule:
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.0.0-beta09")
 }
 

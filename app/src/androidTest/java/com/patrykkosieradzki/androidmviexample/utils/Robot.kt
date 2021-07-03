@@ -4,6 +4,10 @@ import java.util.concurrent.TimeUnit
 
 open class Robot {
     fun wait(seconds: Int) = TimeUnit.SECONDS.sleep(seconds.toLong())
+
+    companion object {
+        var screenshotsEnabled: Boolean = false
+    }
 }
 
 abstract class RobotTest<R : Robot> {

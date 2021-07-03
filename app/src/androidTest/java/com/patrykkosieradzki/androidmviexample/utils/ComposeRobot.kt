@@ -1,17 +1,16 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onRoot
 import com.nhaarman.mockitokotlin2.whenever
 import com.patrykkosieradzki.androidmviexample.ui.theme.AppTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.mockito.Mockito.mock
 
-open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE, EVENT>, ACTIVITY : ComponentActivity>(
+open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE, EVENT>>(
     private val clazz: Class<VM>,
-    private val composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<ACTIVITY>, ACTIVITY>
+    private val composeTestRule: ComposeContentTestRule
 ) : Robot() {
     private lateinit var viewModel: VM
 
@@ -47,5 +46,12 @@ open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE,
             val currentUiState = uiState as MutableStateFlow
             currentUiState.value = newUiState
         }
+    }
+
+    fun captureAndCompare(screenshotName: String) {
+        captureAndCompare(
+            screenshotName = screenshotName,
+            node = composeTestRule.onRoot()
+        )
     }
 }
