@@ -86,7 +86,6 @@ class AddEmployeeViewModel(
 
     private fun loadGenders() {
         safeLaunch {
-            delay(1000)
             val genders = getGendersUseCase()
             updateUiState { UiState.Success(State(genders = genders)) }
         }

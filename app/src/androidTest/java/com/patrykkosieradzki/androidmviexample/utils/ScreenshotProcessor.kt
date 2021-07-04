@@ -27,6 +27,7 @@ fun captureAndCompare(
     }
 }
 
+@Suppress("DEPRECATION")
 private fun saveScreenshot(filename: String, bmp: Bitmap) {
     val picturesPath = getExternalStoragePublicDirectory(DIRECTORY_PICTURES).canonicalPath
     val folderPath =
