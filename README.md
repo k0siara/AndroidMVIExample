@@ -1,7 +1,41 @@
 # AndroidMVIExample
 Example Jetpack Compose Android App, that uses the newest mechanisms, like StateFlow, SharedFlow, etc. to manage states and handle events. ViewModel, UI and Screenshot tests included :)
 
-Run UI tests on Android Emulator API 30 without Google Play! (Google APIs is OK)
+<img src="app/screenshots/01_AddEmployeeScreen_Empty_Form.png" width="250"> <img src="app/screenshots/01_AddEmployeeScreen_Filled_Form.png" width="250"> 
+
+## Architecture
+- Clean Architecture
+- Jetpack Compose
+- MVI
+- Flows
+
+## Stack
+- Kotlin
+- Coroutines
+- Architecture Components
+    * Jetpack Compose
+    * ViewModel
+    * Room
+    * Paging
+- Koin (Dependency Injection)
+
+## Firebase
+- Analytics
+- Crashlytics
+
+## Testing
+- Unit tests
+    * ViewModel and Bussiness logic tests
+    * Junit 4
+    * Mockito-Kotlin
+    * Google Truth
+- UI tests
+    * Using createComposeRule for composable tests
+    * Robot pattern
+- Screenshot tests
+    * node.captureToImage().asAndroidBitmap() for taking composables screenshots
+    * Custom gradle tasks for pulling screenshots from the device
+    * **Run UI tests on Android Emulator API 30 without Google Play! (Google APIs is OK)**
 
 # License
 
