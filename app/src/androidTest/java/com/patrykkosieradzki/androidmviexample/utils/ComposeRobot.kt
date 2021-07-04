@@ -1,16 +1,17 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import com.nhaarman.mockitokotlin2.whenever
 import com.patrykkosieradzki.androidmviexample.ui.theme.AppTheme
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.mockito.Mockito.mock
 
 open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE, EVENT>>(
     private val clazz: Class<VM>,
-    private val composeTestRule: ComposeContentTestRule
+    val composeTestRule: ComposeContentTestRule
 ) : Robot() {
     private lateinit var viewModel: VM
 
@@ -23,8 +24,9 @@ open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE,
         whenever(viewModel.initialSnackbarState).thenReturn(snackbarState)
     }
 
-    fun setViewModel(viewModel: VM) {
+    fun setViewModel(viewModel: VM, initialUiState: UiState<STATE>) {
         this.viewModel = viewModel
+        setUiState(initialUiState)
     }
 
     fun setContent(content: @Composable (viewModel: VM) -> Unit) {
@@ -36,22 +38,29 @@ open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE,
     }
 
     fun onViewModel(actions: VM.() -> Unit) {
-        if (::viewModel.isInitialized) {
-            actions(viewModel)
+        composeTestRule.runOnUiThread {
+            if (::viewModel.isInitialized) {
+                actions(viewModel)
+            }
         }
     }
 
     fun setUiState(newUiState: UiState<STATE>) {
         onViewModel {
-            val currentUiState = uiState as MutableStateFlow
-            currentUiState.value = newUiState
+            setUiState {
+                newUiState
+            }
         }
     }
 
-    fun captureAndCompare(screenshotName: String) {
+    fun capture(screenshotName: String) {
         captureAndCompare(
             screenshotName = screenshotName,
             node = composeTestRule.onRoot()
         )
     }
+}
+
+fun ComposeRobot<*, *, *>.assertTextDisplayed(text: String) {
+    composeTestRule.onNodeWithText(text).assertIsDisplayed()
 }

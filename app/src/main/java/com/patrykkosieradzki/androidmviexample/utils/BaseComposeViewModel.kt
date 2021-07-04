@@ -1,5 +1,6 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -24,7 +25,9 @@ abstract class BaseComposeViewModel<STATE, EVENT : UiEvent>(
     val currentSnackbarState: SnackbarState
         get() = snackbarState.value
 
-    private val _uiState: MutableStateFlow<UiState<STATE>> by lazy { MutableStateFlow(initialState) }
+    private val _uiState: MutableStateFlow<UiState<STATE>> by lazy {
+        MutableStateFlow(initialState)
+    }
     val uiState = _uiState.asStateFlow()
 
     private val _snackbarState: MutableStateFlow<SnackbarState> by lazy {
@@ -42,6 +45,14 @@ abstract class BaseComposeViewModel<STATE, EVENT : UiEvent>(
     }
 
     abstract fun handleEvent(event: EVENT)
+
+    @VisibleForTesting
+    fun setUiState(update: (UiState<STATE>) -> UiState<STATE>) {
+        val newState = update(currentState)
+        if (newState != currentState) {
+            _uiState.value = newState
+        }
+    }
 
     protected fun updateUiState(update: (UiState<STATE>) -> UiState<STATE>) {
         val newState = update(currentState)

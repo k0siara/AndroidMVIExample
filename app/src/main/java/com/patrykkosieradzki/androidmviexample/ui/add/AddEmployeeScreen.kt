@@ -2,10 +2,8 @@ package com.patrykkosieradzki.androidmviexample.ui.add
 
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import com.patrykkosieradzki.androidmviexample.ui.add.components.AddEmployeeScreenBody
 import com.patrykkosieradzki.androidmviexample.utils.BaseComposeScreen

@@ -1,6 +1,8 @@
 # AndroidMVIExample
 Example Jetpack Compose Android App, that uses the newest mechanisms, like StateFlow, SharedFlow, etc. to manage states and handle events. ViewModel, UI and Screenshot tests included :)
 
+Run UI tests on Android Emulator API 30 without Google Play! (Google APIs is OK)
+
 # License
 
     Copyright 2021 Patryk Marciszek-Kosieradzki

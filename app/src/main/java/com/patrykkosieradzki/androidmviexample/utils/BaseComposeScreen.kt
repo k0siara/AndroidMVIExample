@@ -55,10 +55,8 @@ fun <STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE, EVENT>> BaseCompos
 
             when (snackbarResult) {
                 SnackbarResult.Dismissed -> viewModel.dismissSnackbar()
-                SnackbarResult.ActionPerformed -> {
-                }
-                else -> {
-                }
+                SnackbarResult.ActionPerformed -> {}
+                else -> {}
             }
         }
     }
