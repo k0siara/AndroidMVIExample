@@ -37,7 +37,7 @@ fun EmployeeListScreenBody(employees: Flow<PagingData<EmployeeWithGenderAndAddre
 
     LazyColumn {
         items(lazyEmployeeItems) { employee ->
-            Text(text = employee!!.employee.lastName)
+            Text(text = employee?.employee?.lastName.orEmpty())
         }
     }
 }
