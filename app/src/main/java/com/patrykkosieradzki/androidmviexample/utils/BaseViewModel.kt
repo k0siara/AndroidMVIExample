@@ -1,33 +1,41 @@
 package com.patrykkosieradzki.androidmviexample.utils
 
-import androidx.lifecycle.*
-import androidx.navigation.NavDirections
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AllOpen
-abstract class BaseViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
-    initialState: UiState<STATE> = UiState.Loading
+abstract class BaseViewModel<STATE, EVENT : UiEvent>(
+    val initialState: UiState<STATE> = UiState.Loading,
+    val initialSnackbarState: SnackbarState = SnackbarState()
 ) : ViewModel() {
 
     // Get Current State
     val currentState: UiState<STATE>
         get() = uiState.value
-    val inProgress: Flow<Boolean>
-        get() = uiState.map { it is UiState.Loading }
 
-    private val _uiState: MutableStateFlow<UiState<STATE>> = MutableStateFlow(initialState)
+    val currentSnackbarState: SnackbarState
+        get() = snackbarState.value
+
+    private val _uiState: MutableStateFlow<UiState<STATE>> by lazy {
+        MutableStateFlow(initialState)
+    }
     val uiState = _uiState.asStateFlow()
 
-    private val _event: MutableSharedFlow<EVENT> = MutableSharedFlow()
-    val event = _event.asSharedFlow()
+    private val _snackbarState: MutableStateFlow<SnackbarState> by lazy {
+        MutableStateFlow(initialSnackbarState)
+    }
+    val snackbarState = _snackbarState.asStateFlow()
 
-    private val _effect: Channel<EFFECT> = Channel()
-    val effect = _effect.receiveAsFlow()
+    val eventHandler: (EVENT) -> Unit = ::handleEvent
 
     private val _navigationCommandEvent = Channel<NavigationCommand>(Channel.BUFFERED)
     val navigationCommandEvent = _navigationCommandEvent.receiveAsFlow()
@@ -36,29 +44,25 @@ abstract class BaseViewModel<STATE, EVENT : UiEvent, EFFECT : UiEffect>(
         Timber.e(exception, COROUTINE_EXCEPTION_HANDLER_MESSAGE)
     }
 
-    open fun initialize() {}
-
-    protected fun navigateTo(navDirections: NavDirections) {
-        safeLaunch {
-            _navigationCommandEvent.send(NavigationCommand.To(navDirections))
-        }
-    }
-
     abstract fun handleEvent(event: EVENT)
 
-    protected fun setUiEvent(newEvent: EVENT) {
-        viewModelScope.launch { _event.emit(newEvent) }
+    fun updateUiState(updateFunc: (UiState<STATE>) -> UiState<STATE>) {
+        _uiState.update(updateFunc)
     }
 
-    protected fun updateUiState(update: (UiState<STATE>) -> UiState<STATE>) {
-        val newState = update(currentState)
-        if (newState != currentState) {
-            _uiState.value = newState
+    protected fun updateUiSuccessState(update: (STATE) -> STATE) {
+        val newStateData = update(currentState.successData)
+        if (newStateData != currentState.successData) {
+            _uiState.value = UiState.Success(newStateData)
         }
     }
 
-    protected fun setEffect(effectBuilder: () -> EFFECT) {
-        viewModelScope.launch { _effect.send(effectBuilder()) }
+    fun showSnackbar(message: String) {
+        _snackbarState.value = currentSnackbarState.copy(isShown = true, message = message)
+    }
+
+    fun dismissSnackbar() {
+        _snackbarState.value = currentSnackbarState.copy(isShown = false)
     }
 
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {

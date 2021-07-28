@@ -7,14 +7,14 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.patrykkosieradzki.androidmviexample.storage.dao.EmployeeDao
 import com.patrykkosieradzki.androidmviexample.storage.model.EmployeeWithGenderAndAddresses
-import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
+import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState
 import kotlinx.coroutines.flow.Flow
 
 class EmployeeListViewModel(
     private val employeeDao: EmployeeDao
 ) :
-    BaseComposeViewModel<EmployeeListContract.State, EmployeeListContract.Event>(
+    BaseViewModel<EmployeeListContract.State, EmployeeListContract.Event>(
         initialState = UiState.Success(EmployeeListContract.State())
     ) {
 

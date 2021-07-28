@@ -1,17 +1,5 @@
 package com.patrykkosieradzki.androidmviexample.ui.employees
 
-import android.view.View
-import android.widget.TextView
-import androidx.paging.LoadState
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.patrykkosieradzki.androidmviexample.R
-import com.patrykkosieradzki.androidmviexample.utils.BaseFragment
-import com.patrykkosieradzki.androidmviexample.utils.extensions.navigateTo
-import com.patrykkosieradzki.androidmviexample.utils.observeInLifecycle
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.*
-
 //@InternalCoroutinesApi
 //class EmployeeListFragment :
 //    BaseFragment<EmployeeListContract.State, EmployeeListContract.Event,

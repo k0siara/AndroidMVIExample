@@ -6,16 +6,15 @@ import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
 import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCase
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
 import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.State
-import com.patrykkosieradzki.androidmviexample.utils.BaseComposeViewModel
+import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState
 import com.patrykkosieradzki.androidmviexample.utils.successData
-import kotlinx.coroutines.delay
 
 class AddEmployeeViewModel(
     private val getGendersUseCase: GetGendersUseCase,
     private val saveEmployeeUseCase: SaveEmployeeUseCase
 ) :
-    BaseComposeViewModel<State, AddEmployeeContract.Event>(
+    BaseViewModel<State, AddEmployeeContract.Event>(
         initialState = UiState.Loading
     ) {
 

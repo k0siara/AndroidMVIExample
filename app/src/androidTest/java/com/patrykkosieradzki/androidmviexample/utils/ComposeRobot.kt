@@ -9,7 +9,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.patrykkosieradzki.androidmviexample.ui.theme.AppTheme
 import org.mockito.Mockito.mock
 
-open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE, EVENT>>(
+open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseViewModel<STATE, EVENT>>(
     private val clazz: Class<VM>,
     val composeTestRule: ComposeContentTestRule
 ) : Robot() {
@@ -47,7 +47,7 @@ open class ComposeRobot<STATE, EVENT : UiEvent, VM : BaseComposeViewModel<STATE,
 
     fun setUiState(newUiState: UiState<STATE>) {
         onViewModel {
-            setUiState {
+            updateUiState {
                 newUiState
             }
         }
