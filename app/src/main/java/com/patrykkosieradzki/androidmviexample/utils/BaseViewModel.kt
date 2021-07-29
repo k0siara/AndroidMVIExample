@@ -42,9 +42,8 @@ abstract class BaseViewModel<STATE, EVENT : UiEvent>(
     }
 
     protected fun updateUiSuccessState(update: (STATE) -> STATE) {
-        val newStateData = update(currentState.successData)
-        if (newStateData != currentState.successData) {
-            _uiState.value = UiState.Success(newStateData)
+        _uiState.update {
+            UiState.Success(update(currentState.successData))
         }
     }
 
