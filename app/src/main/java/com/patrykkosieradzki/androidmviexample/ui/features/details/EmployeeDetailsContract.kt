@@ -1,11 +1,9 @@
-package com.patrykkosieradzki.androidmviexample.ui.employees
+package com.patrykkosieradzki.androidmviexample.ui.features.details
 
 import com.patrykkosieradzki.androidmviexample.utils.UiEffect
 import com.patrykkosieradzki.androidmviexample.utils.UiEvent
-import com.patrykkosieradzki.androidmviexample.utils.UiState
 
-interface EmployeeListContract {
-
+interface EmployeeDetailsContract {
     sealed class Event : UiEvent
 
     data class State(

@@ -5,9 +5,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.nhaarman.mockitokotlin2.mock
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
 import com.patrykkosieradzki.androidmviexample.domain.model.Gender
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeScreen
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeViewModel
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeContract
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeScreen
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeViewModel
 import com.patrykkosieradzki.androidmviexample.utils.ComposeRobot
 import com.patrykkosieradzki.androidmviexample.utils.RobotTest
 import com.patrykkosieradzki.androidmviexample.utils.UiState

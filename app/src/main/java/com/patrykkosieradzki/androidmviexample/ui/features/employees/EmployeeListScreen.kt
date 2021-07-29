@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.employees
+package com.patrykkosieradzki.androidmviexample.ui.features.employees
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
@@ -11,7 +11,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.patrykkosieradzki.androidmviexample.storage.model.EmployeeWithGenderAndAddresses
-import com.patrykkosieradzki.androidmviexample.utils.BaseComposeScreen
+import com.patrykkosieradzki.androidmviexample.ui.composables.BaseComposeScreen
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 

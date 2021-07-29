@@ -1,22 +1,25 @@
-package com.patrykkosieradzki.androidmviexample.ui.add
+package com.patrykkosieradzki.androidmviexample.ui.features.add
 
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
 import com.patrykkosieradzki.androidmviexample.domain.model.Employee
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
 import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCase
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.Event.*
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract.State
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeContract.Event.*
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeContract.State
 import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState
+import com.patrykkosieradzki.androidmviexample.utils.delegates.CanDisplaySnackbar
+import com.patrykkosieradzki.androidmviexample.utils.delegates.CanDisplaySnackbarImpl
 import com.patrykkosieradzki.androidmviexample.utils.successData
 
 class AddEmployeeViewModel(
     private val getGendersUseCase: GetGendersUseCase,
-    private val saveEmployeeUseCase: SaveEmployeeUseCase
+    private val saveEmployeeUseCase: SaveEmployeeUseCase,
+    private val canDisplaySnackbar: CanDisplaySnackbar = CanDisplaySnackbarImpl()
 ) :
     BaseViewModel<State, AddEmployeeContract.Event>(
         initialState = UiState.Loading
-    ) {
+    ), CanDisplaySnackbar by canDisplaySnackbar {
 
     init {
         loadGenders()
@@ -67,13 +70,15 @@ class AddEmployeeViewModel(
                 firstName.isNotEmpty() && lastName.isNotEmpty() && gender.isNotEmpty() && addresses.isNotEmpty()
             if (isValid) {
                 safeLaunch {
-                    saveEmployeeUseCase(Employee(
-                        firstName = firstName,
-                        lastName = lastName,
-                        age = age,
-                        gender = gender,
-                        addresses = addresses
-                    ))
+                    saveEmployeeUseCase(
+                        Employee(
+                            firstName = firstName,
+                            lastName = lastName,
+                            age = age,
+                            gender = gender,
+                            addresses = addresses
+                        )
+                    )
                     showSnackbar("New employee saved! :)")
                     clearForm()
                 }

@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.details
+package com.patrykkosieradzki.androidmviexample.ui.features.details
 
 import com.patrykkosieradzki.androidmviexample.utils.BaseViewModel
 import com.patrykkosieradzki.androidmviexample.utils.UiState

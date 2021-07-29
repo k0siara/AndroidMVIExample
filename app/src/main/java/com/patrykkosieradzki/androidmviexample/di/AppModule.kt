@@ -6,9 +6,9 @@ import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCase
 import com.patrykkosieradzki.androidmviexample.domain.usecases.GetGendersUseCaseImpl
 import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCase
 import com.patrykkosieradzki.androidmviexample.domain.usecases.SaveEmployeeUseCaseImpl
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeViewModel
-import com.patrykkosieradzki.androidmviexample.ui.details.EmployeeDetailsViewModel
-import com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListViewModel
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeViewModel
+import com.patrykkosieradzki.androidmviexample.ui.features.details.EmployeeDetailsViewModel
+import com.patrykkosieradzki.androidmviexample.ui.features.employees.EmployeeListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

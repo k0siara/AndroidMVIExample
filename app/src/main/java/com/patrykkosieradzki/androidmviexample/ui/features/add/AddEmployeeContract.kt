@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.add
+package com.patrykkosieradzki.androidmviexample.ui.features.add
 
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
 import com.patrykkosieradzki.androidmviexample.domain.model.Gender

@@ -1,4 +1,4 @@
-def kotlin_version = '1.5.20'
+def kotlin_version = '1.5.10'
 ext.versions = [
         kotlin                  :   "$kotlin_version",
         kotlin_jdk8             :   "jdk8-$kotlin_version",

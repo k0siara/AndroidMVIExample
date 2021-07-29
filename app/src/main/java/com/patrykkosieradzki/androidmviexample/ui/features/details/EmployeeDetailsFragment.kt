@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.details
+package com.patrykkosieradzki.androidmviexample.ui.features.details
 
 //class EmployeeDetailsFragment :
 //    BaseFragment<EmployeeDetailsContract.State, EmployeeDetailsContract.Event,

@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.add.components
+package com.patrykkosieradzki.androidmviexample.ui.features.add.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.patrykkosieradzki.androidmviexample.R
 import com.patrykkosieradzki.androidmviexample.domain.model.Address
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeContract
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeContract
 
 @Composable
 fun EmployeeAddressList(

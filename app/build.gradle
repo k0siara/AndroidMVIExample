@@ -155,7 +155,6 @@ dependencies {
     androidTestImplementation "com.google.truth:truth:1.1.2"
 
     androidTestImplementation 'org.mockito:mockito-android:3.8.0'
-    androidTestImplementation deps.espresso.values()
     androidTestUtil 'androidx.test:orchestrator:1.4.0'
     androidTestImplementation 'androidx.test:core:1.4.0'
     androidTestImplementation 'androidx.test:runner:1.4.0'
@@ -195,6 +194,8 @@ dependencies {
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.0.0")
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
 
 def projectScreenshotsDirectory = "$projectDir/screenshots"

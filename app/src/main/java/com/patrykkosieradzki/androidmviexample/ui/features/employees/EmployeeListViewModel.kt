@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.employees
+package com.patrykkosieradzki.androidmviexample.ui.features.employees
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager

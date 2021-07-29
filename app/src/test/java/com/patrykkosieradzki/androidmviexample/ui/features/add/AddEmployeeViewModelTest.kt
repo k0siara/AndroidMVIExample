@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.add
+package com.patrykkosieradzki.androidmviexample.ui.features.add
 
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*

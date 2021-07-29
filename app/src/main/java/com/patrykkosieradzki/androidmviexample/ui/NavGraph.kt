@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.patrykkosieradzki.androidmviexample.ui.add.AddEmployeeScreen
-import com.patrykkosieradzki.androidmviexample.ui.employees.EmployeeListScreen
+import com.patrykkosieradzki.androidmviexample.ui.features.add.AddEmployeeScreen
+import com.patrykkosieradzki.androidmviexample.ui.features.employees.EmployeeListScreen
 
 object MyDestination {
     const val ADD_EMPLOYEE_PATH = "add-employee"

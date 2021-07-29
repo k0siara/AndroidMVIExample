@@ -15,25 +15,16 @@ import timber.log.Timber
 @AllOpen
 abstract class BaseViewModel<STATE, EVENT : UiEvent>(
     val initialState: UiState<STATE> = UiState.Loading,
-    val initialSnackbarState: SnackbarState = SnackbarState()
 ) : ViewModel() {
 
     // Get Current State
     val currentState: UiState<STATE>
         get() = uiState.value
 
-    val currentSnackbarState: SnackbarState
-        get() = snackbarState.value
-
     private val _uiState: MutableStateFlow<UiState<STATE>> by lazy {
         MutableStateFlow(initialState)
     }
     val uiState = _uiState.asStateFlow()
-
-    private val _snackbarState: MutableStateFlow<SnackbarState> by lazy {
-        MutableStateFlow(initialSnackbarState)
-    }
-    val snackbarState = _snackbarState.asStateFlow()
 
     val eventHandler: (EVENT) -> Unit = ::handleEvent
 
@@ -55,14 +46,6 @@ abstract class BaseViewModel<STATE, EVENT : UiEvent>(
         if (newStateData != currentState.successData) {
             _uiState.value = UiState.Success(newStateData)
         }
-    }
-
-    fun showSnackbar(message: String) {
-        _snackbarState.value = currentSnackbarState.copy(isShown = true, message = message)
-    }
-
-    fun dismissSnackbar() {
-        _snackbarState.value = currentSnackbarState.copy(isShown = false)
     }
 
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {

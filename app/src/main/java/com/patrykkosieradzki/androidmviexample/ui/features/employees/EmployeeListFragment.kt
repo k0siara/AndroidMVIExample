@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.androidmviexample.ui.employees
+package com.patrykkosieradzki.androidmviexample.ui.features.employees
 
 //@InternalCoroutinesApi
 //class EmployeeListFragment :
